@@ -6,7 +6,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 
 
-import memories from './images/memories.jpg';
+import memories from './images/vietnam.jpg';
 
 const App = () => {
 	return (

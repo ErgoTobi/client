@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {memo, useState} from "react";
 
 import {VerticalTimeline, VerticalTimelineElement} from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -6,45 +6,35 @@ import {FaHeart} from 'react-icons/fa';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ImageUploader from 'react-images-upload';
-import moment from 'moment';
 
-import stockpot from './../../images/memories.jpg';
-import {grey} from "@material-ui/core/colors";
+import stockVietnam from '../../images/vietnam.jpg';
+import wildschonau from '../../images/wildschonau.jpg';
+import taiwan from '../../images/taiwan.jpg';
+import alishan from '../../images/alishan.jpg';
 
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
 
-const testData = [
-    {
-        headline: "Uber",
-        tagline: "LA",
-        description: "I am very big",
-        startDate: new Date(),
-        endDate: new Date(),
-        image: stockpot
+const ImagePicker = ({onChoose}) =>
+    <ImageUploader withIcon={true} buttonText="Choose new Image"
+                   onChange={onChoose}
+                   imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                   maxFileSize={5242880} singleImage={true} withPreview={false}/>;
 
-    }
-]
-
-const ImagePicker = ({onChoose}) => {
-    return (
-        <>
-            <ImageUploader withIcon={true} buttonText="Choose new Image"
-                           onChange={onChoose}
-                           imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                           maxFileSize={5242880} singleImage={true} withPreview={true}/>
-        </>
-    );
-}
 
 const CalendarPicker = ({parentCallbackStartDate, parentCallbackEndDate, startDate, endDate}) => {
     return (
         <>
-            <DatePicker selected={startDate}
-                        onChange={parentCallbackStartDate}
-                        placeholder="Insert new Start Date" required/>
-            <DatePicker selected={endDate}
-                        onChange={parentCallbackEndDate}
-                        placeholder="Insert new End Date" required/>
+            <div>
+                <DatePicker selected={startDate}
+                            onChange={parentCallbackStartDate}
+                            dateFormat="dd/MM/yyyy"
+                            required/>
+            </div>
+            <div>
+                <DatePicker selected={endDate}
+                            onChange={parentCallbackEndDate}
+                            dateFormat="dd/MM/yyyy"/>
+            </div>
         </>
     );
 }
@@ -54,7 +44,7 @@ class Content extends React.Component {
         headline: '',
         tagline: '',
         description: '',
-        endDate: new Date(),
+        endDate: '',
         startDate: new Date(),
         image: null,
         lastInput: ''
@@ -83,7 +73,7 @@ class Content extends React.Component {
             headline: '',
             tagline: '',
             description: '',
-            endDate: new Date(),
+            endDate: '',
             startDate: new Date(),
             image: null
         }); // Reset Input
@@ -142,14 +132,14 @@ class TiliElement extends React.Component {
         return (
             <VerticalTimelineElement
                 className="vertical-timeline-element--work"
-                date={month[memory.startDate.getUTCMonth()] + " " + memory.startDate.getUTCFullYear() + " - " + month[memory.endDate.getUTCMonth()] + " " + memory.endDate.getUTCFullYear()}
+                date={memory.endDate ? month[memory.startDate.getUTCMonth()] + " " + memory.startDate.getUTCFullYear() + " - " + month[memory.endDate.getUTCMonth()] + " " + memory.endDate.getUTCFullYear() : month[memory.startDate.getUTCMonth()] + " " + memory.startDate.getUTCFullYear()}
                 iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
                 icon={<FaHeart/>}
             >
                 <h3 className="vertical-timeline-element-title">{memory.headline}</h3>
                 <h4 className="vertical-timeline-element-subtitle">{memory.tagline}</h4>
                 <br/>
-                <img src={memory.image} alt="memories" height="170"/>
+                {memory.image ? <img src={memory.image} alt="memories" width="330"/> : <span/>}
                 <p>{memory.description}</p>
             </VerticalTimelineElement>
         );
@@ -162,59 +152,9 @@ function Timeline(props) {
         <VerticalTimeline>
             {props.memories.map(memory => <TiliElement key={Math.random()} {...memory}/>)}
             <VerticalTimelineElement
-                className="vertical-timeline-element--work"
-                contentArrowStyle={{borderRight: '7px solid  rgb(33, 150, 243)'}}
-                date="2012 - present"
-                iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Creative Director</h3>
-                <h4 className="vertical-timeline-element-subtitle">eee</h4>
-                <br/>
-                <img src={stockpot} alt="memories" height="170"/>
-                <p>
-                    Creative Direction, User Experience, Visual Design, Project Management, Team Leading
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                className="vertical-timeline-element--work"
-                date="2010 - 2011"
-                iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Art Director</h3>
-                <h4 className="vertical-timeline-element-subtitle">San Francisco, CA</h4>
-                <p>
-                    Creative Direction, User Experience, Visual Design, SEO, Online Marketing
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                className="vertical-timeline-element--work"
-                date="2008 - 2010"
-                iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Web Designer</h3>
-                <h4 className="vertical-timeline-element-subtitle">Los Angeles, CA</h4>
-                <p>
-                    User Experience, Visual Design
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                className="vertical-timeline-element--work"
-                date="2006 - 2008"
-                iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Web Designer</h3>
-                <h4 className="vertical-timeline-element-subtitle">San Francisco, CA</h4>
-                <p>
-                    User Experience, Visual Design
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
                 className="vertical-timeline-element--education"
-                date="April 2013"
+                contentArrowStyle={{borderRight: '7px solid  rgb(33, 150, 243)'}}
+                date="Apr 2013"
                 iconStyle={{background: 'rgb(233, 30, 99)', color: '#fff'}}
                 icon={<FaHeart/>}
             >
@@ -223,31 +163,6 @@ function Timeline(props) {
                 <h4 className="vertical-timeline-element-subtitle">Online Course</h4>
                 <p>
                     Strategy, Social Media
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                className="vertical-timeline-element--education"
-                date="November 2012"
-                iconStyle={{background: 'rgb(233, 30, 99)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Agile Development Scrum Master</h3>
-                <h4 className="vertical-timeline-element-subtitle">Certification</h4>
-                <p>
-                    Creative Direction, User Experience, Visual Design
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                className="vertical-timeline-element--education"
-                date="2002 - 2006"
-                iconStyle={{background: 'rgb(233, 30, 99)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Bachelor of Science in Interactive Digital Media
-                    Visual Imaging</h3>
-                <h4 className="vertical-timeline-element-subtitle">Bachelor Degree</h4>
-                <p>
-                    Creative Direction, Visual Design
                 </p>
             </VerticalTimelineElement>
             <VerticalTimelineElement
@@ -262,9 +177,8 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            memories: testData
+            memories: testData.sort((a,b) => b.startDate - a.startDate) // Sorting initially
         };
-        console.log(this.state.memories.image)
     }
 
     // Works the same with babel, not yet part of the official syntax
@@ -276,9 +190,8 @@ export default class Form extends React.Component {
         console.log(memoryData);
         // To update state of react component
         this.setState(prevState => ({
-            memories: [...prevState.memories, memoryData], // equivalent of concat operation -> spread operator syntax
+            memories: [...prevState.memories, memoryData].sort((a,b) => b.startDate - a.startDate) // equivalent of concat operation -> spread operator syntax
         }));
-        console.log(this.state.memories.image)
     };
 
     render() {
@@ -293,3 +206,38 @@ export default class Form extends React.Component {
 }
 
 // array wird noch nicht automatishc upgedatet
+
+const testData = [
+    {
+        headline: "Vietman",
+        tagline: "Trying to get a China Visa",
+        description: "There was only little time getting my access rights for the Kung Fu school in China. A layover of a couple of hours stood between me and my holistic travel plan! What a time to be alive! xD ",
+        startDate: new Date("5/2/2018"),
+        endDate: new Date("6/3/2018"),
+        image: stockVietnam
+    },
+    {
+        headline: "Wildschönau",
+        tagline: "Fyling ever higher",
+        description: "A chilled summer of enjoying the nature. Some colleagues of mine were introduced to paragliding. This meant the beginning of the 'peachy paragliders'!",
+        startDate: new Date("4/2/2019"),
+        endDate: new Date("9/3/2019"),
+        image: wildschonau
+    },
+    {
+        headline: "Taiwan - Taipei",
+        tagline: "Saying Goodbye",
+        description: "Unbelievable!? I have waited till the very end to visit the capital of Taiwan - Taipei. Also I drank my beloved Bubble Tea for the last time... ",
+        startDate: new Date("8/2/2018"),
+        endDate: null,
+        image: taiwan
+    },
+    {
+        headline: "Taiwan - Alishan",
+        tagline: "Stand up early to see the sun rising they said... it's gonna be fun they said...",
+        description: "There are just these times when it feels a little to early in the morning. On our way at 4pm...",
+        startDate: new Date("3/2/2018"),
+        endDate: null,
+        image: alishan
+    }
+]
