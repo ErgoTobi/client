@@ -39,7 +39,7 @@ const Header = () => {
                                 </NavDropdown>
                             </Nav>
                             <Form inline>
-                                <FormControl type="text" placeholder="search" className="mr-sm-2"/><Button
+                                <FormControl type="description" placeholder="search" className="mr-sm-2"/><Button
                                 variant="outline-primary">search</Button>
                             </Form>
                         </Navbar.Collapse>

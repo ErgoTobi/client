@@ -3,51 +3,122 @@ import React, {useState} from "react";
 import {VerticalTimeline, VerticalTimelineElement} from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import {FaHeart} from 'react-icons/fa';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ImageUploader from 'react-images-upload';
+import moment from 'moment';
 
-import {FormControl, InputLabel, Input, FormHelperText, TextField} from "@material-ui/core";
-
-import memories from './../../images/memories.jpg';
+import stockpot from './../../images/memories.jpg';
+import {grey} from "@material-ui/core/colors";
 
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
 
 const testData = [
-    {position: "Uber", location: "LA", img: memories, text: "I am very big"},
-    {position: "DJ", location: "Munich", img: memories, text: "I am very small"},
-    {position: "IT Architect", location: "Berlin", img: memories, text: "I am very smart"}
+    {
+        headline: "Uber",
+        tagline: "LA",
+        description: "I am very big",
+        startDate: new Date(),
+        endDate: new Date(),
+        image: stockpot
+
+    }
 ]
 
+const ImagePicker = ({onChoose}) => {
+    return (
+        <>
+            <ImageUploader withIcon={true} buttonText="Choose new Image"
+                           onChange={onChoose}
+                           imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                           maxFileSize={5242880} singleImage={true} withPreview={true}/>
+        </>
+    );
+}
+
+const CalendarPicker = ({parentCallbackStartDate, parentCallbackEndDate, startDate, endDate}) => {
+    return (
+        <>
+            <DatePicker selected={startDate}
+                        onChange={parentCallbackStartDate}
+                        placeholder="Insert new Start Date" required/>
+            <DatePicker selected={endDate}
+                        onChange={parentCallbackEndDate}
+                        placeholder="Insert new End Date" required/>
+        </>
+    );
+}
 
 class Content extends React.Component {
-    state = { memory: '' };
+    state = {
+        headline: '',
+        tagline: '',
+        description: '',
+        endDate: new Date(),
+        startDate: new Date(),
+        image: null,
+        lastInput: ''
+    };
     // memoryInput = React.createRef(); // 1) Functions as a ID
     handleSubmit = (event) => {
         event.preventDefault(); // Without this line, page is going to refresh
         /*
         console.log(
             this.memoryInput.current.value // 1) read from DOM element
-        )*/
+        )
+        */
         // 2) Controlled components
-        console.log(this.state.memory);
+        // console.log(this.state.memory);
 
-        this.props.onSubmit({ position: this.state.memory, location: "test", img: memories, text: "hiho" });
-
-        this.setState({ memory: '' }); // Reset Input
+        this.props.onSubmit({
+            headline: this.state.headline,
+            tagline: this.state.tagline,
+            description: this.state.description,
+            endDate: this.state.endDate,
+            startDate: this.state.startDate,
+            image: this.state.image
+        });
+        this.setState({
+            lastInput: this.state.headline,
+            headline: '',
+            tagline: '',
+            description: '',
+            endDate: new Date(),
+            startDate: new Date(),
+            image: null
+        }); // Reset Input
     };
+
+    callbackStartDate = (date) => this.setState({startDate: date});
+    callbackEndDate = (date) => this.setState({endDate: date});
+    onChooseImage = (event) => {
+        console.log(event[0])
+        this.setState({image: URL.createObjectURL(event[0])});
+    }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                {/* 1) <input type="text" placeholder="Enter new memory" ref={this.memoryInput} required/>*/}
-                <input type="text" value={this.state.memory}
-                       onChange={event => this.setState({ memory: event.target.value })}
-                       placeholder="Insert new Memory" required/>
-                <pre>
-                    <button>Add Memory</button>
-                </pre>
-                <p>Last Input: {}</p>
+                {/* 1) <input type="description" placeholder="Enter new memory" ref={this.memoryInput} required/>*/}
+                <input type="text" value={this.state.headline}
+                       onChange={event => this.setState({headline: event.target.value})}
+                       placeholder="Insert new Headline" required/>
+                <input type="text" value={this.state.tagline}
+                       onChange={event => this.setState({tagline: event.target.value})}
+                       placeholder="Insert new Tagline" />
+                <input type="text" value={this.state.description}
+                       onChange={event => this.setState({description: event.target.value})}
+                       placeholder="Insert new Description" />
+                <CalendarPicker parentCallbackStartDate={this.callbackStartDate}
+                                parentCallbackEndDate={this.callbackEndDate} startDate={this.state.startDate}
+                                endDate={this.state.endDate}/>
+                <ImagePicker onChoose={this.onChooseImage}/>
+                <button>Add Memory</button>
+                <p>Last Input: {this.state.lastInput}</p>
             </form>
         );
     }
+
     // list.map((ele) => <p>{ele}</p>)
     // list.slice(-1)[0]
 }
@@ -55,18 +126,31 @@ class Content extends React.Component {
 class TiliElement extends React.Component {
     render() {
         const memory = this.props;
+        let month = new Array();
+        month[0] = "Jan";
+        month[1] = "Feb";
+        month[2] = "Mar";
+        month[3] = "Apr";
+        month[4] = "May";
+        month[5] = "Jun";
+        month[6] = "Jul";
+        month[7] = "Aug";
+        month[8] = "Sep";
+        month[9] = "Oct";
+        month[10] = "Nov";
+        month[11] = "Dec";
         return (
             <VerticalTimelineElement
                 className="vertical-timeline-element--work"
-                date="2010 - 2011"
+                date={month[memory.startDate.getUTCMonth()] + " " + memory.startDate.getUTCFullYear() + " - " + month[memory.endDate.getUTCMonth()] + " " + memory.endDate.getUTCFullYear()}
                 iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
                 icon={<FaHeart/>}
             >
-                <h3 className="vertical-timeline-element-title">{memory.position}</h3>
-                <h4 className="vertical-timeline-element-subtitle">{memory.location}</h4>
+                <h3 className="vertical-timeline-element-title">{memory.headline}</h3>
+                <h4 className="vertical-timeline-element-subtitle">{memory.tagline}</h4>
                 <br/>
-                <img src={memory.img} alt="memories" height="170"/>
-                <p>{memory.text}</p>
+                <img src={memory.image} alt="memories" height="170"/>
+                <p>{memory.description}</p>
             </VerticalTimelineElement>
         );
     }
@@ -87,7 +171,7 @@ function Timeline(props) {
                 <h3 className="vertical-timeline-element-title">Creative Director</h3>
                 <h4 className="vertical-timeline-element-subtitle">eee</h4>
                 <br/>
-                <img src={memories} alt="memories" height="170"/>
+                <img src={stockpot} alt="memories" height="170"/>
                 <p>
                     Creative Direction, User Experience, Visual Design, Project Management, Team Leading
                 </p>
@@ -178,8 +262,9 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            memories: testData,
+            memories: testData
         };
+        console.log(this.state.memories.image)
     }
 
     // Works the same with babel, not yet part of the official syntax
@@ -193,14 +278,18 @@ export default class Form extends React.Component {
         this.setState(prevState => ({
             memories: [...prevState.memories, memoryData], // equivalent of concat operation -> spread operator syntax
         }));
+        console.log(this.state.memories.image)
     };
 
     render() {
         return (
             <>
                 <Content onSubmit={this.addNewMemory}/>
+                <br/>
                 <Timeline memories={this.state.memories}/>
             </>
         );
     }
 }
+
+// array wird noch nicht automatishc upgedatet
