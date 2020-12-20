@@ -90,6 +90,7 @@ class Content extends React.Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 {/* 1) <input type="description" placeholder="Enter new memory" ref={this.memoryInput} required/>*/}
+                <span>Text Input: </span>
                 <input type="text" value={this.state.headline}
                        onChange={event => this.setState({headline: event.target.value})}
                        placeholder="Insert new Headline" required/>
@@ -99,12 +100,14 @@ class Content extends React.Component {
                 <input type="text" value={this.state.description}
                        onChange={event => this.setState({description: event.target.value})}
                        placeholder="Insert new Description" />
+                <p>Last Headline: {this.state.lastInput}</p>
+                <div>Date Input: </div>
                 <CalendarPicker parentCallbackStartDate={this.callbackStartDate}
                                 parentCallbackEndDate={this.callbackEndDate} startDate={this.state.startDate}
                                 endDate={this.state.endDate}/>
                 <ImagePicker onChoose={this.onChooseImage}/>
                 <button>Add Memory</button>
-                <p>Last Input: {this.state.lastInput}</p>
+
             </form>
         );
     }
@@ -139,7 +142,7 @@ class TiliElement extends React.Component {
                 <h3 className="vertical-timeline-element-title">{memory.headline}</h3>
                 <h4 className="vertical-timeline-element-subtitle">{memory.tagline}</h4>
                 <br/>
-                {memory.image ? <img src={memory.image} alt="memories" width="330"/> : <span/>}
+                {memory.image ? <img src={memory.image} alt="memories" width="100%"/> : <span/>}
                 <p>{memory.description}</p>
             </VerticalTimelineElement>
         );
