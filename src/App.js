@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { Grow, Grid } from "@material-ui/core";
-import Form from "./components/form/form";
+import {Grow, Grid} from "@material-ui/core";
+import Form from "./components/Form/Form.js";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 
-
-import memories from './images/vietnam.jpg';
+import { useDispatch } from 'react-redux';
+import { getPosts } from "./actions/posts.js";
+import Posts from './components/Posts/Posts.js'
 
 const App = () => {
-	return (
-		<div className="container">
-			{/*
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getPosts());
+    }, [dispatch]);
+
+    return (
+        <div className="container">
+            <Posts></Posts>
+            {/*
 			<Jumbotron>
 				<h1>Hello, world!</h1>
 				<p>
@@ -24,22 +32,21 @@ const App = () => {
 				</p>
 			</Jumbotron>
 			*/}
-			<Grow in>
-				<div className="container">
-					<Grid container justify="space-between" alignItems="stretch" spacing={3}>
-						<Grid item xs={12} sm={10}>
-							<Form />
-						</Grid>
-						<Grid item xs={12} sm={2}>
+            <Grow in>
+                <div className="container">
+                    <Grid container justify="space-between" alignItems="stretch" spacing={3}>
+                        <Grid item xs={12} sm={10}>
+                            <Form/>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
 
-						</Grid>
-					</Grid>
-				</div>
-			</Grow>
-		</div>
-	)
+                        </Grid>
+                    </Grid>
+                </div>
+            </Grow>
+        </div>
+    )
 }
-
 
 
 export default App;
