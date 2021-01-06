@@ -18,7 +18,6 @@ const App = () => {
 
     return (
         <div className="container">
-            <Posts></Posts>
             {/*
 			<Jumbotron>
 				<h1>Hello, world!</h1>
@@ -32,11 +31,12 @@ const App = () => {
 				</p>
 			</Jumbotron>
 			*/}
+			<Form/>
             <Grow in>
                 <div className="container">
                     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
                         <Grid item xs={12} sm={10}>
-                            <Form/>
+                            <Posts/>
                         </Grid>
                         <Grid item xs={12} sm={2}>
 
