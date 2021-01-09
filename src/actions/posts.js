@@ -8,8 +8,8 @@ export const getPosts = () => async (dispatch) => { // Redux thunk with two arro
         console.log(data);
 
         dispatch({ type: 'FETCH_ALL', payload: data })
-    } catch (error) {
-        console.log(error.message);
+    } catch (e) {
+        console.log(e);
     }
 }
 
@@ -19,8 +19,30 @@ export const createPost = (post) => async (dispatch) => {
 
         console.log(data);
 
-        dispatch({ type: 'CREATE', payload: data })
+        dispatch({ type: 'CREATE', payload: data });
     } catch (e) {
-        console.log(e.message);
+        console.log(e);
+    }
+}
+
+export const updatePost = (id, post) => async (dispatch) => {
+    try {
+        const { data } = await api.updatePost(id, post);
+
+        console.log(data);
+
+        dispatch ({ type: 'UPDATE', payload: data })
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export const deletePost = (id) => async (dispatch) => {
+    try {
+        await api.deletePost(id);
+
+        dispatch({ type: 'DELETE', payload: id });
+    } catch (e) {
+        console.log(e);
     }
 }

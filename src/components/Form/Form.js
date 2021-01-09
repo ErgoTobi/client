@@ -1,14 +1,15 @@
 import React, {memo, useState} from "react";
 
 import 'react-vertical-timeline-component/style.min.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ImageUploader from 'react-images-upload';
 import useStyles from "../Posts/styles";
 import FileBase from 'react-file-base64';
 import {useDispatch} from "react-redux";
 import {createPost} from "../../actions/posts";
 import {Button, Paper, TextField, Typography} from "@material-ui/core";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import imageToBase64 from "image-to-base64";
 
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
 
@@ -22,13 +23,15 @@ const Form = () => {
         headline: '',
         tagline: '',
         description: '',
-        endDate: '',
-        startDate: '',
+        endDate: new Date(),
+        startDate: new Date(),
         image: '',
     });
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent browser from refreshing
+
+        console.log(postData);
 
         dispatch(createPost(postData));
     }
@@ -37,21 +40,46 @@ const Form = () => {
 
     }
 
+    const getBase64 = file => {
+        return new Promise(resolve => {
+            let baseURL = "";
+            // Make new FileReader
+            let reader = new FileReader();
+
+            // Convert the file to base64 text
+            reader.readAsDataURL(file);
+
+            // on reader load something...
+            reader.onload = () => {
+                // Make a fileInfo Object
+                console.log("Called", reader);
+                baseURL = reader.result;
+                resolve(baseURL);
+            };
+        });
+    };
+
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">Creating a Memory</Typography>
-                <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline} onChange={(e) => setPostData({ ...postData, headline: e.target.value })} required/>
-                <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline} onChange={(e) => setPostData({ ...postData, tagline: e.target.value })}/>
-                <TextField name="description" variant="outlined" label="Description" fullWidth value={postData.description} onChange={(e) => setPostData({ ...postData, description: e.target.value })}/>
-                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} value={postData.startDate} onChange={(e) => setPostData({ ...postData, startDate: e.target.value })} required/>
-                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} value={postData.endDate} onChange={(e) => setPostData({ ...postData, endDate: e.target.value })}/>
+                <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline}
+                           onChange={(e) => setPostData({ ...postData, headline: e.target.value })} required/>
+                <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline}
+                           onChange={(e) => setPostData({ ...postData, tagline: e.target.value })}/>
+                <TextField name="description" variant="outlined" label="Description" fullWidth value={postData.description}
+                           onChange={(e) => setPostData({ ...postData, description: e.target.value })}/>
+                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} value={postData.startDate}
+                           onChange={(e) => setPostData({ ...postData, startDate: new Date(e.target.value) })} required/>
+                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} value={postData.endDate}
+                           onChange={(e) => setPostData({ ...postData, endDate: new Date(e.target.value) })}/>
                 {/*<div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
                 </div>*/}
                 <ImageUploader name="image" withIcon={true} buttonText="Choose new Image"
                                imgExtension={['.jpg', '.gif', '.png']}
-                               maxFileSize={5242880} singleImage={true} withPreview={true} onChange={({base64}) => setPostData({ ...postData, image: base64})} />;
+                               maxFileSize={5242880} singleImage={true} withPreview={true} onChange={(file) => {getBase64(file[0]).then(result => setPostData({ ...postData, image: result }))
+                               }} />
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
@@ -62,8 +90,6 @@ const Form = () => {
 }
 
 export default Form;
-
-
 
 const ImagePicker = ({onChoose}) =>
     <ImageUploader withIcon={true} buttonText="Choose new Image"
