@@ -8,60 +8,11 @@ import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline
 import {FaHeart} from "react-icons/fa";
 
 import {Content} from "../Form/Form.js"
-import {TiliElement} from "./Post/Post.js"
+import TiliElement from "./Post/Post.js"
 import {useSelector} from "react-redux";
 import useStyles from "./styles.js"
 import {CircularProgress, Grid} from "@material-ui/core";
 
-const Posts2 = () => {
-    const posts = useSelector((state) => state.posts);
-    const classes = useStyles();
-
-    console.log(posts);
-    return (
-        !posts.length ? <CircularProgress /> : (
-            <VerticalTimeline>
-                {posts.map((post) => (
-                    <TiliElement key={post._id} xs={12} sm={6} {...posts[0]}
-                    />
-                ))}
-                <VerticalTimelineElement
-                    iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
-                    icon={<FaHeart/>}
-                />
-            </VerticalTimeline>
-        )
-    );
-}
-
-
-
-function Timeline(props) {
-    // without key property for dynamic children elements, the location is internally taken as id which might cause problems when ordering -> to avoid assign a unique key profile.id e.g.
-    return (
-        <VerticalTimeline>
-            {props.memories.map(memory => <TiliElement key={Math.random()} {...memory}/>)}
-            <VerticalTimelineElement
-                className="vertical-timeline-element--education"
-                contentArrowStyle={{borderRight: '7px solid  rgb(33, 150, 243)'}}
-                date="Apr 2013"
-                iconStyle={{background: 'rgb(233, 30, 99)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">Content Marketing for Web, Mobile and Social
-                    Media</h3>
-                <h4 className="vertical-timeline-element-subtitle">Online Course</h4>
-                <p>
-                    Strategy, Social Media
-                </p>
-            </VerticalTimelineElement>
-            <VerticalTimelineElement
-                iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
-                icon={<FaHeart/>}
-            />
-        </VerticalTimeline>
-    );
-}
 
 export default class Posts extends React.Component {
     constructor(props) {
@@ -89,12 +40,32 @@ export default class Posts extends React.Component {
             <>
                 <Content onSubmit={this.addNewMemory}/>
                 <br/>
-                <Timeline memories={this.state.memories}/>
-                <Posts2 />
+                <Timeline/>
             </>
         );
     }
 }
+
+const Timeline = () => {
+    const posts = useSelector((state) => state.posts);
+    const classes = useStyles();
+
+    console.log(posts);
+    return (
+        !posts.length ? <CircularProgress /> : (
+            <VerticalTimeline>
+                {posts.map((post) => (
+                    <TiliElement key={post._id} xs={12} sm={6} post={post} />
+                ))}
+                <VerticalTimelineElement
+                    iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
+                    icon={<FaHeart/>}
+                />
+            </VerticalTimeline>
+        )
+    );
+}
+
 
 const testData = [
     {
@@ -130,3 +101,34 @@ const testData = [
         image: alishan
     }
 ]
+
+
+
+
+/*
+function Timeline(props) {
+    // without key property for dynamic children elements, the location is internally taken as id which might cause problems when ordering -> to avoid assign a unique key profile.id e.g.
+    return (
+        <VerticalTimeline>
+            {props.memories.map(memory => <TiliElement key={Math.random()} {...memory}/>)}
+            <VerticalTimelineElement
+                className="vertical-timeline-element--education"
+                contentArrowStyle={{borderRight: '7px solid  rgb(33, 150, 243)'}}
+                date="Apr 2013"
+                iconStyle={{background: 'rgb(233, 30, 99)', color: '#fff'}}
+                icon={<FaHeart/>}
+            >
+                <h3 className="vertical-timeline-element-title">Content Marketing for Web, Mobile and Social
+                    Media</h3>
+                <h4 className="vertical-timeline-element-subtitle">Online Course</h4>
+                <p>
+                    Strategy, Social Media
+                </p>
+            </VerticalTimelineElement>
+            <VerticalTimelineElement
+                iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
+                icon={<FaHeart/>}
+            />
+        </VerticalTimeline>
+    );
+}*/

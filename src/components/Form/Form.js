@@ -9,7 +9,6 @@ import {createPost} from "../../actions/posts";
 import {Button, Paper, TextField, Typography} from "@material-ui/core";
 import moment from "moment";
 import DatePicker from "react-datepicker";
-import imageToBase64 from "image-to-base64";
 
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
 
@@ -69,17 +68,16 @@ const Form = () => {
                            onChange={(e) => setPostData({ ...postData, tagline: e.target.value })}/>
                 <TextField name="description" variant="outlined" label="Description" fullWidth value={postData.description}
                            onChange={(e) => setPostData({ ...postData, description: e.target.value })}/>
-                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} value={postData.startDate}
+                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.startDate.toISOString().substring(0, 10)}
                            onChange={(e) => setPostData({ ...postData, startDate: new Date(e.target.value) })} required/>
-                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} value={postData.endDate}
+                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.endDate.toISOString().substring(0, 10)}
                            onChange={(e) => setPostData({ ...postData, endDate: new Date(e.target.value) })}/>
                 {/*<div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
                 </div>*/}
                 <ImageUploader name="image" withIcon={true} buttonText="Choose new Image"
                                imgExtension={['.jpg', '.gif', '.png']}
-                               maxFileSize={5242880} singleImage={true} withPreview={true} onChange={(file) => {getBase64(file[0]).then(result => setPostData({ ...postData, image: result }))
-                               }} />
+                               maxFileSize={5242880} singleImage={true} withPreview={true} onChange={(file) => file.length ? getBase64(file[0]).then(result => setPostData({ ...postData, image: result })) : console.log("Files empty")} />
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 

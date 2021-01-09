@@ -1,15 +1,5 @@
 import axios from 'axios';
 
-const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-
-function reviver(key, value) {
-    if (typeof value === "string" && dateFormat.test(value)) {
-        return new Date(value);
-    }
-
-    return value;
-}
-
 const url = 'http://localhost:5000/posts';
 
 export const fetchPosts = () => axios.get(url, { transformResponse: [function (data) {

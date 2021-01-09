@@ -3,26 +3,25 @@ import {VerticalTimelineElement} from "react-vertical-timeline-component";
 import {FaHeart} from "react-icons/fa";
 import moment from "moment";
 
-export class TiliElement extends React.Component {
-    render() {
-        const post = this.props;
-        return (
-            <VerticalTimelineElement
-                className="vertical-timeline-element--work"
-                date={post.endDate ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear() : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear()}
-                iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
-                icon={<FaHeart/>}
-            >
-                <h3 className="vertical-timeline-element-title">{post.headline}</h3>
-                <h4 className="vertical-timeline-element-subtitle">{post.tagline}</h4>
-                <br/>
-                {post.image ? <img src={post.image} alt="memories" width="100%"/> : <span/>}
-                <p>{post.description}</p>
-                <p>{moment(post.createdAt).fromNow()}</p>
-            </VerticalTimelineElement>
-        );
-    }
+const TiliElement = ({ post }) => {
+    return (
+        <VerticalTimelineElement
+            className="vertical-timeline-element--work"
+            date={post.endDate ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear() : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear()}
+            iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
+            icon={<FaHeart/>}
+        >
+            <h3 className="vertical-timeline-element-title">{post.headline}</h3>
+            <h4 className="vertical-timeline-element-subtitle">{post.tagline}</h4>
+            <br/>
+            {post.image ? <img src={`${post.image}`} alt="memories" width="100%"/> : <span/>}
+            <p>{post.description}</p>
+            <p>{moment(post.createdAt).fromNow()}</p>
+        </VerticalTimelineElement>
+    );
 }
+
+export default TiliElement;
 
 
 let month = new Array();
