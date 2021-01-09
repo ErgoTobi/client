@@ -8,7 +8,7 @@ const Post = ({ post }) => {
         console.log(post);
         return post.endDate
             ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear()
-            : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear())
+            : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear()
     }
 
     return (
