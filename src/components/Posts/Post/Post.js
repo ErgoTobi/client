@@ -3,11 +3,18 @@ import {VerticalTimelineElement} from "react-vertical-timeline-component";
 import {FaHeart} from "react-icons/fa";
 import moment from "moment";
 
-const TiliElement = ({ post }) => {
+const Post = ({ post }) => {
+    const formatDate = () => {
+        console.log(post);
+        return post.endDate
+            ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear()
+            : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear())
+    }
+
     return (
         <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            date={post.endDate ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear() : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear()}
+            date={formatDate()}
             iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
             icon={<FaHeart/>}
         >
@@ -21,7 +28,7 @@ const TiliElement = ({ post }) => {
     );
 }
 
-export default TiliElement;
+export default Post;
 
 
 let month = new Array();

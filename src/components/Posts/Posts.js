@@ -8,46 +8,14 @@ import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline
 import {FaHeart} from "react-icons/fa";
 
 import {Content} from "../Form/Form.js"
-import TiliElement from "./Post/Post.js"
+import Post from "./Post/Post.js"
 import {useSelector} from "react-redux";
 import useStyles from "./styles.js"
-import {CircularProgress, Grid} from "@material-ui/core";
+import {CircularProgress} from "@material-ui/core";
 
 
-export default class Posts extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            memories: testData.sort((a,b) => b.startDate - a.startDate) // Sorting initially
-        };
-    }
-
-    // Works the same with babel, not yet part of the official syntax
-    // state = {
-    //     memories: testData,
-    // };
-
-    addNewMemory = (memoryData) => {
-        console.log(memoryData);
-        // To update state of react component
-        this.setState(prevState => ({
-            memories: [...prevState.memories, memoryData].sort((a,b) => b.startDate - a.startDate) // equivalent of concat operation -> spread operator syntax
-        }));
-    };
-
-    render() {
-        return (
-            <>
-                <Content onSubmit={this.addNewMemory}/>
-                <br/>
-                <Timeline/>
-            </>
-        );
-    }
-}
-
-const Timeline = () => {
-    const posts = useSelector((state) => state.posts);
+const Posts = () => {
+    const posts = useSelector((state) => state.posts.sort((a,b) => b.startDate - a.startDate));
     const classes = useStyles();
 
     console.log(posts);
@@ -55,7 +23,7 @@ const Timeline = () => {
         !posts.length ? <CircularProgress /> : (
             <VerticalTimeline>
                 {posts.map((post) => (
-                    <TiliElement key={post._id} xs={12} sm={6} post={post} />
+                    <Post key={post._id} xs={12} sm={6} post={post} />
                 ))}
                 <VerticalTimelineElement
                     iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
@@ -65,6 +33,9 @@ const Timeline = () => {
         )
     );
 }
+
+export default Posts;
+
 
 
 const testData = [
@@ -131,4 +102,26 @@ function Timeline(props) {
             />
         </VerticalTimeline>
     );
-}*/
+}
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            memories: testData.sort((a,b) => b.startDate - a.startDate) // Sorting initially
+        };
+    }
+
+    // Works the same with babel, not yet part of the official syntax
+    // state = {
+    //     memories: testData,
+    // };
+
+    addNewMemory = (memoryData) => {
+        console.log(memoryData);
+        // To update state of react component
+        this.setState(prevState => ({
+            memories: [...prevState.memories, memoryData].sort((a,b) => b.startDate - a.startDate) // equivalent of concat operation -> spread operator syntax
+        }));
+    };
+
+*/

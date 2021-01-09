@@ -89,30 +89,18 @@ const Form = () => {
 
 export default Form;
 
-const ImagePicker = ({onChoose}) =>
-    <ImageUploader withIcon={true} buttonText="Choose new Image"
-                   onChange={onChoose}
-                   imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                   maxFileSize={5242880} singleImage={true} withPreview={false}/>;
 
 
-const CalendarPicker = ({parentCallbackStartDate, parentCallbackEndDate, startDate, endDate}) => {
-    return (
-        <>
-            <div>
-                <DatePicker selected={startDate}
-                            onChange={parentCallbackStartDate}
-                            dateFormat="dd/MM/yyyy"
-                            required/>
-            </div>
-            <div>
-                <DatePicker selected={endDate}
-                            onChange={parentCallbackEndDate}
-                            dateFormat="dd/MM/yyyy"/>
-            </div>
-        </>
-    );
-}
+
+
+
+
+
+
+
+
+
+/*
 
 export class Content extends React.Component {
     state = {
@@ -127,11 +115,11 @@ export class Content extends React.Component {
     // memoryInput = React.createRef(); // 1) Functions as a ID
     handleSubmit = (event) => {
         event.preventDefault(); // Without this line, page is going to refresh
-        /*
+
         console.log(
             this.memoryInput.current.value // 1) read from DOM element
         )
-        */
+
         // 2) Controlled components
         // console.log(this.state.memory);
 
@@ -164,7 +152,7 @@ export class Content extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                {/* 1) <input type="description" placeholder="Enter new memory" ref={this.memoryInput} required/>*/}
+                {// 1) <input type="description" placeholder="Enter new memory" ref={this.memoryInput} required/>}
                 <span>Text Input: </span>
                 <input type="text" value={this.state.headline}
                        onChange={event => this.setState({headline: event.target.value})}
@@ -191,7 +179,7 @@ export class Content extends React.Component {
     // list.slice(-1)[0]
 }
 
-
+*/
 
 
 
