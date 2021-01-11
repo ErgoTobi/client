@@ -7,7 +7,6 @@ import alishan from "../../images/alishan.jpg";
 import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline-component";
 import {FaHeart} from "react-icons/fa";
 
-import {Content} from "../Form/Form.js"
 import Post from "./Post/Post.js"
 import {useSelector} from "react-redux";
 import useStyles from "./styles.js"

@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {useState} from "react";
 
 import 'react-vertical-timeline-component/style.min.css';
 import ImageUploader from 'react-images-upload';
@@ -7,16 +7,21 @@ import FileBase from 'react-file-base64';
 import {useDispatch} from "react-redux";
 import {createPost} from "../../actions/posts";
 import {Button, Paper, TextField, Typography} from "@material-ui/core";
-import moment from "moment";
-import DatePicker from "react-datepicker";
+
+import Resizer from 'react-image-file-resizer';
 
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
+
 
 const Form = () => {
     // const posts = useSelector((state) => state.posts);
     const classes = useStyles();
 
     const dispatch = useDispatch();
+
+    const imgExtension = ['.jpg', '.gif', '.png'];
+    const fileUploaderLabel = `Max file size: 10mb; 
+    Accepted: ${imgExtension}`;
 
     const [postData, setPostData] = useState({
         headline: '',
@@ -39,24 +44,13 @@ const Form = () => {
 
     }
 
-    const getBase64 = file => {
-        return new Promise(resolve => {
-            let baseURL = "";
-            // Make new FileReader
-            let reader = new FileReader();
+    const resizeFileToBase64 = (file) => new Promise(resolve => {
+        Resizer.imageFileResizer(file, 500, 500, 'JPEG', 100, 0,
+            uri => {
+                resolve(uri);
+            }, 'base64' );
+    });
 
-            // Convert the file to base64 text
-            reader.readAsDataURL(file);
-
-            // on reader load something...
-            reader.onload = () => {
-                // Make a fileInfo Object
-                console.log("Called", reader);
-                baseURL = reader.result;
-                resolve(baseURL);
-            };
-        });
-    };
 
     return (
         <Paper className={classes.paper}>
@@ -75,9 +69,8 @@ const Form = () => {
                 {/*<div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
                 </div>*/}
-                <ImageUploader name="image" withIcon={true} buttonText="Choose new Image"
-                               imgExtension={['.jpg', '.gif', '.png']}
-                               maxFileSize={5242880} singleImage={true} withPreview={true} onChange={(file) => file.length ? getBase64(file[0]).then(result => setPostData({ ...postData, image: result })) : console.log("Files empty")} />
+                <ImageUploader name="image" withIcon={true} buttonText="Choose new Image" imgExtension={imgExtension} maxFileSize={10485760} label={fileUploaderLabel} singleImage={true} withPreview={true}
+                               onChange={(file) => file.length ? resizeFileToBase64(file[0]).then(result => setPostData({ ...postData, image: result })) : console.log("Files are empty...")} />
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
@@ -88,6 +81,7 @@ const Form = () => {
 }
 
 export default Form;
+
 
 
 
