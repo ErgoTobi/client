@@ -14,8 +14,11 @@ import Resizer from 'react-image-file-resizer';
 
 
 const Form = ({ currentId, setCurrentId }) => {
-    const defaultData = { headline: '', tagline: '', description: '', endDate: new Date(), startDate: new Date(), image: '' }
+    const dateToIsoString = ( date ) => date.toISOString().substring(0, 10);
+
+    const defaultData = { headline: '', tagline: '', description: '', endDate: dateToIsoString(new Date()), startDate: dateToIsoString(new Date()), image: ''}
     const [postData, setPostData] = useState(defaultData);
+    const [imageUploadData, setImageUploadData] = useState({ selectedFiles: [] });
     const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -25,11 +28,11 @@ const Form = ({ currentId, setCurrentId }) => {
     }, [post]);
 
     const imgExtension = ['.jpg', '.gif', '.png'];
-    const fileUploaderLabel = `Max file size: 10mb; 
-    Accepted: ${imgExtension}`;
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent browser from refreshing
+
+        console.log(postData);
 
         if(currentId) {
             dispatch(updatePost(currentId, postData));
@@ -40,8 +43,10 @@ const Form = ({ currentId, setCurrentId }) => {
     }
 
     const clear = () => {
+        console.log(imageUploadData);
         setCurrentId(null);
         setPostData(defaultData);
+        setImageUploadData({ selectedFiles: [] });
     }
 
     const resizeFileToBase64 = (file) => new Promise(resolve => {
@@ -49,6 +54,11 @@ const Form = ({ currentId, setCurrentId }) => {
             uri => {
                 resolve(uri);
             }, 'base64' );
+    });
+
+    const setAsyncState = (files) => new Promise(resolve => {
+        setImageUploadData({ selectedFiles: files });
+        resolve(files[0]);
     });
 
     return (
@@ -61,15 +71,16 @@ const Form = ({ currentId, setCurrentId }) => {
                            onChange={(e) => setPostData({ ...postData, tagline: e.target.value })}/>
                 <TextField name="description" variant="outlined" label="Description" fullWidth value={postData.description}
                            onChange={(e) => setPostData({ ...postData, description: e.target.value })}/>
-                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.startDate.toISOString().substring(0, 10)}
+                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.startDate}
                            onChange={(e) => setPostData({ ...postData, startDate: new Date(e.target.value) })} required/>
-                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.endDate.toISOString().substring(0, 10)}
-                           onChange={(e) => setPostData({ ...postData, endDate: new Date(e.target.value) })}/>
+                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.endDate}
+                           onChange={(e) => {setPostData({ ...postData, endDate: new Date(e.target.value) })}}/>
                 {/*<div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
                 </div>*/}
-                <ImageUploader name="image" withIcon={true} buttonText="Choose new Image" imgExtension={imgExtension} maxFileSize={10485760} label={fileUploaderLabel} singleImage={true} withPreview={true}
-                               onChange={(file) => file.length ? resizeFileToBase64(file[0]).then(result => setPostData({ ...postData, image: result })) : console.log("Files are empty...")} />
+                <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText="Choose new Image" imgExtension={imgExtension} maxFileSize={10485760} label={`Max file size: 10mb; Accepted: ${imgExtension}`} singleImage={true}
+                               withPreview={imageUploadData.selectedFiles.length ? true : false}
+                               onChange={(files) => setAsyncState(files).then((file) => resizeFileToBase64(file).then(result => {setPostData({ ...postData, image: result })}))} />
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
