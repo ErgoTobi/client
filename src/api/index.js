@@ -21,9 +21,6 @@ export const deletePost = (id) => axios.delete(`${url}/${id}`);
 
 
 
-
-
-
 /*
 (async () => {
   axios.interceptors.request.use(
