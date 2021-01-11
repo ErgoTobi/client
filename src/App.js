@@ -15,18 +15,18 @@ const App = () => {
     }, [dispatch]);
 
     return (
-        <div className="container">
-			<Form/>
+        <div className="container" >
+            <div align="center">
+                <Form />
+            </div>
             <Grow in>
                 <div className="container">
                     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
-                        <Grid item xs={12} sm={10}>
+                        <Grid item xs={12} sm={12}>
                             <br/>
                             <Posts/>
                         </Grid>
-                        <Grid item xs={12} sm={2}>
-
-                        </Grid>
+                        {/*<Grid item xs={12} sm={2}></Grid>*/}
                     </Grid>
                 </div>
             </Grow>

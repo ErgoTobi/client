@@ -11,15 +11,18 @@ import Post from "./Post/Post.js"
 import {useSelector} from "react-redux";
 import useStyles from "./styles.js"
 import {CircularProgress} from "@material-ui/core";
-
+import {LinearProgress} from "@material-ui/core";
+import moment from "moment";
 
 const Posts = () => {
-    const posts = useSelector((state) => state.posts.sort((a,b) => b.startDate - a.startDate));
     const classes = useStyles();
 
-    console.log(posts);
+    const posts = useSelector((state) => state.posts
+        .map(post => ({ ...post, startDate: moment(post.startDate).utc().toDate(), endDate:moment(post.endDate).utc().toDate() })) // Same mapping as in reducers to ensure new Dates with UTC encoding else UI breaks
+        .sort((a,b) => b.startDate - a.startDate));
+
     return (
-        !posts.length ? <CircularProgress /> : (
+        !posts.length ? <LinearProgress  /> : (
             <VerticalTimeline>
                 {posts.map((post) => (
                     <Post key={post._id} xs={12} sm={6} post={post} />

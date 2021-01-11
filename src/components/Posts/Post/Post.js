@@ -5,10 +5,14 @@ import moment from "moment";
 
 const Post = ({ post }) => {
     const formatDate = () => {
-        console.log(post);
-        return post.endDate
-            ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear()
-            : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear()
+        try {
+            return post.endDate
+                ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear()
+                : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear();
+        } catch (e) {
+            console.log(e);
+            return "";
+        }
     }
 
     return (

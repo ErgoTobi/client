@@ -5,7 +5,7 @@ const posts = (posts = [], action) => {
       case 'UPDATE':
           return posts.map((post) => post._id === action.payload._id ? action.payload : post);
       case 'FETCH_ALL':
-          return action.payload.map(post => ({ ...post, startDate: new Date(post.startDate), endDate: new Date(post.startDate) }));
+          return action.payload.map(post => ({ ...post, startDate: new Date(post.startDate), endDate: new Date(post.endDate) }));
       case 'CREATE':
           return [ ...posts, action.payload ];
       default:

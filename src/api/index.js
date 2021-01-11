@@ -10,10 +10,7 @@ export const fetchPosts = () => axios.get(url, { transformResponse: [function (d
         throw Error(`[requestClient] Error parsing response JSON data - ${JSON.stringify(e)}`)
     }
     return resp;
-    }]}).then((response) => {
-        console.log(response)
-        return response;
-    }
+    }]}).then((response) => { return response; }
 
 );
 export const createPost = (newPost) => axios.post(url, newPost);

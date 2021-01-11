@@ -6,7 +6,7 @@ import useStyles from "../Posts/styles";
 import FileBase from 'react-file-base64';
 import {useDispatch} from "react-redux";
 import {createPost} from "../../actions/posts";
-import {Button, Paper, TextField, Typography} from "@material-ui/core";
+import {Box, Button, Paper, TextField, Typography} from "@material-ui/core";
 
 import Resizer from 'react-image-file-resizer';
 
@@ -35,8 +35,6 @@ const Form = () => {
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent browser from refreshing
 
-        console.log(postData);
-
         dispatch(createPost(postData));
     }
 
@@ -51,11 +49,10 @@ const Form = () => {
             }, 'base64' );
     });
 
-
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">Creating a Memory</Typography>
+                <Typography variant="h5" ><Box fontStyle="oblique">Creating a Memory</Box></Typography>
                 <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline}
                            onChange={(e) => setPostData({ ...postData, headline: e.target.value })} required/>
                 <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline}
