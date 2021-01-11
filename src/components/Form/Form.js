@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import 'react-vertical-timeline-component/style.min.css';
 import ImageUploader from 'react-images-upload';
 import useStyles from "../Posts/styles";
 import FileBase from 'react-file-base64';
-import {useDispatch} from "react-redux";
-import {createPost} from "../../actions/posts";
+import {useDispatch, useSelector} from "react-redux";
+import {createPost, updatePost} from "../../actions/posts";
 import {Box, Button, Paper, TextField, Typography} from "@material-ui/core";
 
 import Resizer from 'react-image-file-resizer';
@@ -13,37 +13,39 @@ import Resizer from 'react-image-file-resizer';
 /* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
 
 
-const Form = () => {
-    // const posts = useSelector((state) => state.posts);
+const Form = ({ currentId, setCurrentId }) => {
+    const defaultData = { headline: '', tagline: '', description: '', endDate: new Date(), startDate: new Date(), image: '' }
+    const [postData, setPostData] = useState(defaultData);
+    const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
-
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(post) setPostData(post);
+    }, [post]);
 
     const imgExtension = ['.jpg', '.gif', '.png'];
     const fileUploaderLabel = `Max file size: 10mb; 
     Accepted: ${imgExtension}`;
 
-    const [postData, setPostData] = useState({
-        headline: '',
-        tagline: '',
-        description: '',
-        endDate: new Date(),
-        startDate: new Date(),
-        image: '',
-    });
-
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent browser from refreshing
 
-        dispatch(createPost(postData));
+        if(currentId) {
+            dispatch(updatePost(currentId, postData));
+        } else {
+            dispatch(createPost(postData));
+        }
+        clear();
     }
 
     const clear = () => {
-
+        setCurrentId(null);
+        setPostData(defaultData);
     }
 
     const resizeFileToBase64 = (file) => new Promise(resolve => {
-        Resizer.imageFileResizer(file, 500, 500, 'JPEG', 100, 0,
+        Resizer.imageFileResizer(file, 1000, 1000, 'JPEG', 100, 0,
             uri => {
                 resolve(uri);
             }, 'base64' );
@@ -52,7 +54,7 @@ const Form = () => {
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h5" ><Box fontStyle="oblique">Create your Memoires</Box></Typography>
+                <Typography variant="h5" ><Box fontStyle="oblique">{ currentId ? 'Edit' : 'Create' } your Memoires</Box></Typography>
                 <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline}
                            onChange={(e) => setPostData({ ...postData, headline: e.target.value })} required/>
                 <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline}

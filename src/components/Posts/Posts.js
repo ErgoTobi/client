@@ -14,7 +14,7 @@ import {CircularProgress} from "@material-ui/core";
 import {LinearProgress} from "@material-ui/core";
 import moment from "moment";
 
-const Posts = () => {
+const Posts = ({ setCurrentId }) => {
     const classes = useStyles();
 
     const posts = useSelector((state) => state.posts
@@ -25,7 +25,7 @@ const Posts = () => {
         !posts.length ? <LinearProgress  /> : (
             <VerticalTimeline>
                 {posts.map((post) => (
-                    <Post key={post._id} xs={12} sm={6} post={post} />
+                    <Post key={post._id} xs={12} sm={6} post={post} setCurrentId={setCurrentId} />
                 ))}
                 <VerticalTimelineElement
                     iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}

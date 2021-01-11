@@ -27,7 +27,7 @@ export const createPost = (post) => async (dispatch) => {
 
 export const updatePost = (id, post) => async (dispatch) => {
     try {
-        const { data } = await api.updatePost(id, post);
+        const { data } = await api.updatePost(id, post); // const response as destructuring the response to immediately get the data: const { data }
 
         console.log(data);
 

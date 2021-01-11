@@ -7,7 +7,7 @@ import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
-const Post = ({ post }) => {
+const Post = ({ post, setCurrentId }) => {
     const formatDate = () => {
         try {
             return post.endDate
@@ -25,14 +25,14 @@ const Post = ({ post }) => {
             date={formatDate()}
             iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
             icon={<FaHeart/>}>
-           <Layout1 post={post} />
+           <Layout1 post={post} setCurrentId={setCurrentId} />
         </VerticalTimelineElement>
     );
 }
 
 export default Post;
 
-const Layout1 = ({ post }) => {
+const Layout1 = ({ post, setCurrentId }) => {
     const classes = useStyles();
     return (
         <>
@@ -42,17 +42,17 @@ const Layout1 = ({ post }) => {
                     <Typography variant="h4"><Box color={post.image ? "white" : "black"}>{post.headline}</Box></Typography>
                 </div>
                 <div className={classes.overlay2}>
-                    <Button style={{color: 'white'}} size="small" onClick={() => {}}>
+                    <Button style={{color: 'white'}} size="small"
+                            onClick={() => setCurrentId(post._id)}>
                         <MoreHorizIcon fontSize="default"/>
                     </Button>
                 </div>
                 <div className={classes.details}>
-                    <br/>
-                    <Typography variant="h6" color="textSecondary">{post.tagline}</Typography>
                     {/*<Typography variant="body2" color="textSecondary">{post.tag.map((tag) => `#${tag}`)}</Typography>*/}
                 </div>
+                <Typography className={classes.title} variant="h5">{post.tagline}</Typography>
                 <CardContent>
-                    <Typography className={classes.title} variant="h5" gutterBottom>{post.description}</Typography>
+                    <Typography variant="body1" gutterBottom>{post.description}</Typography>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Typography className={classes.textVertical} variant="body2" >{moment(post.createdAt).fromNow()}</Typography>
@@ -65,7 +65,6 @@ const Layout1 = ({ post }) => {
         </>
     )
 }
-
 
 const Layout2 = ({ post }) => {
     return (
