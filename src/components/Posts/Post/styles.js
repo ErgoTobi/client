@@ -33,6 +33,12 @@ export default makeStyles({
         right: '20px',
         color: 'white',
     },
+    layout2delete: {
+        position: 'absolute',
+        bottom: '20px',
+        right: '20px',
+        color: 'black',
+    },
     grid: {
         display: 'flex',
     },

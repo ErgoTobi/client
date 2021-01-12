@@ -8,6 +8,7 @@ import Posts from './components/Posts/Posts.js'
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null);
+    const [toggleLayout, setToggleLayout] = useState('left');
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -19,12 +20,12 @@ const App = () => {
             <Grow in>
                 <div className="container">
                     <div align="center">
-                        <Form currentId={currentId} setCurrentId={setCurrentId}/>
+                        <Form currentId={currentId} setCurrentId={setCurrentId} toggleLayout={toggleLayout} setToggleLayout={setToggleLayout}/>
                     </div>
                     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
                         <Grid item xs={12} sm={12}>
                             <br/>
-                            <Posts setCurrentId={setCurrentId}/>
+                            <Posts setCurrentId={setCurrentId} toggleLayout={toggleLayout}/>
                         </Grid>
                         {/*<Grid item xs={12} sm={2}></Grid>*/}
                     </Grid>

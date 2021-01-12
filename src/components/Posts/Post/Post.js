@@ -9,7 +9,7 @@ import {deletePost} from "../../../actions/posts.js"
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
-const Post = ({post, setCurrentId}) => {
+const Post = ({post, setCurrentId, toggleLayout}) => {
     const formatDate = () => {
         try {
             return post.endDate || post.endDate !== null
@@ -27,7 +27,9 @@ const Post = ({post, setCurrentId}) => {
             date={formatDate()}
             iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
             icon={<FaHeart/>}>
-            <Layout1 post={post} setCurrentId={setCurrentId}/>
+            {toggleLayout === 'left' ? <Layout1 post={post} setCurrentId={setCurrentId}/> :
+                <Layout2 post={post} setCurrentId={setCurrentId}/>}
+
         </VerticalTimelineElement>
     );
 }
@@ -78,14 +80,29 @@ const Layout1 = ({post, setCurrentId}) => {
     )
 }
 
-const Layout2 = ({post}) => {
+const Layout2 = ({post, setCurrentId}) => {
+    const classes = useStyles();
+    const dispatch = useDispatch();
     return (
         <>
             <h3 className="vertical-timeline-element-title">{post.headline}</h3>
+            <div className={classes.overlay2}>
+                <Button style={{color: "black"}} size="small"
+                        onClick={() => setCurrentId(post._id)}>
+                    <MoreHorizIcon fontSize="default"/>
+                </Button>
+            </div>
             <h4 className="vertical-timeline-element-subtitle">{post.tagline}</h4>
             <br/>
             {post.image ? <img src={`${post.image}`} alt="memories" width="100%"/> : <span/>}
-            <p>{post.description}</p>
+            <Typography variant="body2" color="textSecondary" component="p">{post.description}</Typography>
+            <br/>
+            <div className={classes.layout2delete}>
+                <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
+                    <DeleteIcon fontSize="small"/>
+                    Delete {/* Space &nbsp; */}
+                </Button>
+            </div>
         </>
     )
 }
