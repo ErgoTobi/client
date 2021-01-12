@@ -4,10 +4,10 @@ import {FaHeart} from "react-icons/fa";
 import moment from "moment";
 import useStyles from "./styles.js";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import {useDispatch} from "react-redux";
 import {deletePost} from "../../../actions/posts.js"
+import DeleteIcon from "@material-ui/icons/Delete";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 const Post = ({post, setCurrentId}) => {
     const formatDate = () => {
@@ -33,6 +33,7 @@ const Post = ({post, setCurrentId}) => {
 }
 
 export default Post;
+
 
 const Layout1 = ({post, setCurrentId}) => {
     const classes = useStyles();

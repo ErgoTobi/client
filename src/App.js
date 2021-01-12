@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import {Grow, Grid} from "@material-ui/core";
 import Form from "./components/Form/Form.js";
-
 import { useDispatch } from 'react-redux';
 import { getPosts } from "./actions/posts.js";
 import Posts from './components/Posts/Posts.js'
@@ -34,6 +33,5 @@ const App = () => {
         </div>
     )
 }
-
 
 export default App;

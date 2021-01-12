@@ -6,11 +6,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {createPost, updatePost} from "../../actions/posts";
 import {Box, Button, Paper, TextField, Typography, Grid} from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
+import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import Resizer from 'react-image-file-resizer';
+import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import FormatAlignLeftIcon from "@material-ui/icons/FormatAlignLeft";
+import FormatAlignRightIcon from "@material-ui/icons/FormatAlignRight";
+import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
 
 const Form = ({currentId, setCurrentId}) => {
     const dateToIsoString = (date) => date.toISOString().substring(0, 10);
@@ -110,14 +111,41 @@ const Form = ({currentId, setCurrentId}) => {
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit"
                         fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
-
             </form>
-
+            <br/>
+            <ToggleButtons/>
         </Paper>
     );
 }
 
 export default Form;
+
+const ToggleButtons = () => {
+    const [alignment, setAlignment] = React.useState('left');
+
+    const handleAlignment = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
+
+    return (
+        <ToggleButtonGroup
+            value={alignment}
+            exclusive
+            onChange={handleAlignment}
+            aria-label="text alignment"
+        >
+            <ToggleButton value="left" aria-label="left aligned">
+                <FormatAlignLeftIcon />
+            </ToggleButton>
+            <ToggleButton value="right" aria-label="right aligned">
+                <FormatAlignRightIcon />
+            </ToggleButton>
+            <ToggleButton value="justify" aria-label="justified" disabled>
+                <FormatAlignJustifyIcon />
+            </ToggleButton>
+        </ToggleButtonGroup>
+    );
+}
 
 
 /*
