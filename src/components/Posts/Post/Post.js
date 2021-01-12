@@ -45,7 +45,7 @@ const Layout1 = ({ post, setCurrentId }) => {
             <Card className={classes.card}>
                 {post.image ? <CardMedia className={classes.media} image={post.image} title={post.headline} /> : <span/>}
                 <div className={classes.overlay}>
-                    <Typography variant="h4"><Box color={adaptFontColorToImageExistence()}>{post.headline}</Box></Typography>
+                    <Typography variant="h6"><Box color={adaptFontColorToImageExistence()}>{post.headline}</Box></Typography>
                 </div>
                 <div className={classes.overlay2}>
                     <Button style={{color: adaptFontColorToImageExistence()}} size="small"
@@ -56,15 +56,15 @@ const Layout1 = ({ post, setCurrentId }) => {
                 <div className={classes.details}>
                     {/*<Typography variant="body2" color="textSecondary">{post.tag.map((tag) => `#${tag}`)}</Typography>*/}
                 </div>
-                <Typography className={classes.title} variant="h5">{post.tagline}</Typography>
+                <Typography className={classes.title} variant="h6" gutterBottom>{ post.tagline }</Typography>
                 <CardContent>
-                    <Typography variant="body1" gutterBottom>{post.description}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">{ post.description }</Typography>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Typography className={classes.textVertical} variant="body2" >{moment(post.createdAt).fromNow()}</Typography>
                     <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
                         <DeleteIcon fontSize="small"/>
-                        Delete
+                        Delete  {/* Space &nbsp; */}
                     </Button>
                 </CardActions>
             </Card>

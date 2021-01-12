@@ -77,7 +77,9 @@ const Form = ({ currentId, setCurrentId }) => {
                            onChange={(e) => {setPostData({ ...postData, endDate: new Date(e.target.value) })}}/>
                 {/*<div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
-                </div>*/}
+                </div>
+                <TextField name="tag" variant="outlined" label="Tags" fullWidth value={postData.tag}
+                           onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}/>*/}
                 <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText="Choose new Image" imgExtension={imgExtension} maxFileSize={10485760} label={`Max file size: 10mb; Accepted: ${imgExtension}`} singleImage={true}
                                withPreview={imageUploadData.selectedFiles.length ? true : false}
                                onChange={(files) => setAsyncState(files).then((file) => resizeFileToBase64(file).then(result => {setPostData({ ...postData, image: result })}))} />
