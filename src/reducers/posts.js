@@ -1,5 +1,4 @@
 import {CREATE, FETCH_ALL, UPDATE, DELETE} from "../constants/actionTypes";
-import moment from "moment";
 
 const posts = (posts = [], action) => {
   switch(action.type) {
