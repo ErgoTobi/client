@@ -1,31 +1,28 @@
-import React, { useState } from 'react';
-
-import stockVietnam from "../../images/vietnam.jpg";
-import wildschonau from "../../images/wildschonau.jpg";
-import taiwan from "../../images/taiwan.jpg";
-import alishan from "../../images/alishan.jpg";
+import React from 'react';
 import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline-component";
 import {FaHeart} from "react-icons/fa";
-
 import Post from "./Post/Post.js"
 import {useSelector} from "react-redux";
 import useStyles from "./styles.js"
-import {CircularProgress} from "@material-ui/core";
 import {LinearProgress} from "@material-ui/core";
 import moment from "moment";
 
-const Posts = ({ setCurrentId }) => {
+const Posts = ({setCurrentId}) => {
     const classes = useStyles();
 
     const posts = useSelector((state) => state.posts
-        .map(post => ({ ...post, startDate: moment(post.startDate).utc().toDate(), endDate:moment(post.endDate).utc().toDate() })) // Same mapping as in reducers to ensure new Dates with UTC encoding else UI breaks
-        .sort((a,b) => b.startDate - a.startDate));
+        .map(post => ({
+            ...post,
+            startDate: moment(post.startDate).utc().toDate(),
+            endDate: post.endDate !== null ? moment(post.endDate).utc().toDate() : post.endDate
+        })) // Same mapping as in reducers to ensure new Dates with UTC encoding else UI breaks
+        .sort((a, b) => b.startDate - a.startDate));
 
     return (
-        !posts.length ? <LinearProgress  /> : (
+        !posts.length ? <LinearProgress/> : (
             <VerticalTimeline>
                 {posts.map((post) => (
-                    <Post key={post._id} xs={12} sm={6} post={post} setCurrentId={setCurrentId} />
+                    <Post key={post._id} xs={12} sm={6} post={post} setCurrentId={setCurrentId}/>
                 ))}
                 <VerticalTimelineElement
                     iconStyle={{background: 'rgb(16, 204, 82)', color: '#fff'}}
@@ -37,45 +34,6 @@ const Posts = ({ setCurrentId }) => {
 }
 
 export default Posts;
-
-
-
-const testData = [
-    {
-        headline: "Vietman",
-        tagline: "Trying to get a China Visa",
-        description: "There was only little time getting my access rights for the Kung Fu school in China. A layover of a couple of hours stood between me and my holistic travel plan! What a time to be alive! xD ",
-        startDate: new Date("5/2/2018"),
-        endDate: new Date("6/3/2018"),
-        image: stockVietnam
-    },
-    {
-        headline: "Wildschönau",
-        tagline: "Fyling ever higher",
-        description: "A chilled summer of enjoying the nature. Some colleagues of mine were introduced to paragliding. This meant the beginning of the 'peachy paragliders'!",
-        startDate: new Date("4/2/2019"),
-        endDate: new Date("9/3/2019"),
-        image: wildschonau
-    },
-    {
-        headline: "Taiwan - Taipei",
-        tagline: "Saying Goodbye",
-        description: "Unbelievable!? I have waited till the very end to visit the capital of Taiwan - Taipei. Also I drank my beloved Bubble Tea for the last time... ",
-        startDate: new Date("8/2/2018"),
-        endDate: null,
-        image: taiwan
-    },
-    {
-        headline: "Taiwan - Alishan",
-        tagline: "Stand up early to see the sun rising they said... it's gonna be fun they said...",
-        description: "There are just these times when it feels a little to early in the morning. On our way at 4pm...",
-        startDate: new Date("3/2/2018"),
-        endDate: null,
-        image: alishan
-    }
-]
-
-
 
 
 /*
@@ -126,4 +84,38 @@ function Timeline(props) {
         }));
     };
 
+const testData = [
+    {
+        headline: "Vietman",
+        tagline: "Trying to get a China Visa",
+        description: "There was only little time getting my access rights for the Kung Fu school in China. A layover of a couple of hours stood between me and my holistic travel plan! What a time to be alive! xD ",
+        startDate: new Date("5/2/2018"),
+        endDate: new Date("6/3/2018"),
+        image: ''
+    },
+    {
+        headline: "Wildschönau",
+        tagline: "Fyling ever higher",
+        description: "A chilled summer of enjoying the nature. Some colleagues of mine were introduced to paragliding. This meant the beginning of the 'peachy paragliders'!",
+        startDate: new Date("4/2/2019"),
+        endDate: new Date("9/3/2019"),
+        image: ''
+    },
+    {
+        headline: "Taiwan - Taipei",
+        tagline: "Saying Goodbye",
+        description: "Unbelievable!? I have waited till the very end to visit the capital of Taiwan - Taipei. Also I drank my beloved Bubble Tea for the last time... ",
+        startDate: new Date("8/2/2018"),
+        endDate: null,
+        image: ''
+    },
+    {
+        headline: "Taiwan - Alishan",
+        tagline: "Stand up early to see the sun rising they said... it's gonna be fun they said...",
+        description: "There are just these times when it feels a little to early in the morning. On our way at 4pm...",
+        startDate: new Date("3/2/2018"),
+        endDate: null,
+        image: ''
+    }
+]
 */

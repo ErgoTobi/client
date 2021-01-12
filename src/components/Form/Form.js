@@ -1,30 +1,36 @@
 import React, {useState, useEffect} from "react";
-
 import 'react-vertical-timeline-component/style.min.css';
 import ImageUploader from 'react-images-upload';
 import useStyles from "../Posts/styles";
-import FileBase from 'react-file-base64';
 import {useDispatch, useSelector} from "react-redux";
 import {createPost, updatePost} from "../../actions/posts";
-import {Box, Button, Paper, TextField, Typography} from "@material-ui/core";
-
+import {Box, Button, Paper, TextField, Typography, Grid} from "@material-ui/core";
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 import Resizer from 'react-image-file-resizer';
 
-/* contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }} */
+const Form = ({currentId, setCurrentId}) => {
+    const dateToIsoString = (date) => date.toISOString().substring(0, 10);
 
-
-const Form = ({ currentId, setCurrentId }) => {
-    const dateToIsoString = ( date ) => date.toISOString().substring(0, 10);
-
-    const defaultData = { headline: '', tagline: '', description: '', endDate: dateToIsoString(new Date()), startDate: dateToIsoString(new Date()), image: ''}
+    const defaultData = {
+        headline: '',
+        tagline: '',
+        description: '',
+        endDate: null,
+        startDate: new Date(),
+        image: ''
+    }
     const [postData, setPostData] = useState(defaultData);
-    const [imageUploadData, setImageUploadData] = useState({ selectedFiles: [] });
+    const [imageUploadData, setImageUploadData] = useState({selectedFiles: []});
     const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(post) setPostData(post);
+        if (post) setPostData(post);
     }, [post]);
 
     const imgExtension = ['.jpg', '.gif', '.png'];
@@ -32,9 +38,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent browser from refreshing
 
-        console.log(postData);
-
-        if(currentId) {
+        if (currentId) {
             dispatch(updatePost(currentId, postData));
         } else {
             dispatch(createPost(postData));
@@ -43,47 +47,68 @@ const Form = ({ currentId, setCurrentId }) => {
     }
 
     const clear = () => {
-        console.log(imageUploadData);
         setCurrentId(null);
         setPostData(defaultData);
-        setImageUploadData({ selectedFiles: [] });
+        setImageUploadData({selectedFiles: []});
+
     }
 
     const resizeFileToBase64 = (file) => new Promise(resolve => {
         Resizer.imageFileResizer(file, 1000, 1000, 'JPEG', 100, 0,
             uri => {
                 resolve(uri);
-            }, 'base64' );
+            }, 'base64');
     });
 
-    const setAsyncState = (files) => new Promise(resolve => {
-        setImageUploadData({ selectedFiles: files });
+    const setAsyncFileState = (files) => new Promise(resolve => {
+        setImageUploadData({selectedFiles: files});
         resolve(files[0]);
     });
 
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h5" ><Box fontStyle="oblique">{ currentId ? 'Edit' : 'Create' } your Memoires</Box></Typography>
+                <Typography variant="h5"><Box fontStyle="oblique">{currentId ? 'Edit' : 'Create'} your
+                    Memoires</Box></Typography>
                 <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline}
-                           onChange={(e) => setPostData({ ...postData, headline: e.target.value })} required/>
+                           onChange={(e) => setPostData({...postData, headline: e.target.value})} required/>
                 <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline}
-                           onChange={(e) => setPostData({ ...postData, tagline: e.target.value })}/>
-                <TextField name="description" variant="outlined" label="Description" fullWidth value={postData.description}
-                           onChange={(e) => setPostData({ ...postData, description: e.target.value })}/>
-                <TextField name="startDate" variant="outlined" label="Start Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.startDate}
-                           onChange={(e) => setPostData({ ...postData, startDate: new Date(e.target.value) })} required/>
-                <TextField name="endDate" variant="outlined" label="End Date" type="date" InputLabelProps={{shrink: true,}} defaultValue={postData.endDate}
-                           onChange={(e) => {setPostData({ ...postData, endDate: new Date(e.target.value) })}}/>
-                {/*<div className={classes.fileInput}>
-                    <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, image: base64})} />
-                </div>
+                           onChange={(e) => setPostData({...postData, tagline: e.target.value})}/>
+                <TextField name="description" variant="outlined" label="Description" fullWidth
+                           value={postData.description}
+                           onChange={(e) => setPostData({...postData, description: e.target.value})}/>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                        <KeyboardDatePicker name="startDate" margin="normal" label="Start Date" format="dd/MM/yyyy"
+                                            value={postData.startDate}
+                                            onChange={(e) => {
+                                                setPostData({...postData, startDate: e})
+                                            }}
+                                            KeyboardButtonProps={{'aria-label': 'change date',}}
+                                            InputLabelProps={{shrink: true,}} required/>
+                        <KeyboardDatePicker name="endDate" margin="normal" label="End Date" format="dd/MM/yyyy"
+                                            value={postData.endDate}
+                                            onChange={(e) => {
+                                                setPostData({...postData, endDate: e})
+                                            }}
+                                            KeyboardButtonProps={{'aria-label': 'change date',}}
+                                            InputLabelProps={{shrink: true,}}/>
+                    </Grid>
+                </MuiPickersUtilsProvider>
+
+                {/*
                 <TextField name="tag" variant="outlined" label="Tags" fullWidth value={postData.tag}
-                           onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}/>*/}
-                <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText="Choose new Image" imgExtension={imgExtension} maxFileSize={10485760} label={`Max file size: 10mb; Accepted: ${imgExtension}`} singleImage={true}
+                           onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}/>
+                 */}
+                <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText="Choose new Image"
+                               imgExtension={imgExtension} maxFileSize={10485760}
+                               label={`Max file size: 10mb; Accepted: ${imgExtension}`} singleImage={true}
                                withPreview={imageUploadData.selectedFiles.length ? true : false}
-                               onChange={(files) => setAsyncState(files).then((file) => resizeFileToBase64(file).then(result => {setPostData({ ...postData, image: result })}))} />
-                <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
+                               onChange={(files) => setAsyncFileState(files).then((file) => resizeFileToBase64(file).then(result => {
+                                   setPostData({...postData, image: result})
+                               }))}/>
+                <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit"
+                        fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
             </form>
@@ -93,17 +118,6 @@ const Form = ({ currentId, setCurrentId }) => {
 }
 
 export default Form;
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

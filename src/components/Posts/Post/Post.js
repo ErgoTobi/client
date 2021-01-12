@@ -6,13 +6,13 @@ import useStyles from "./styles.js";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import { useDispatch } from "react-redux";
-import { deletePost } from "../../../actions/posts.js"
+import {useDispatch} from "react-redux";
+import {deletePost} from "../../../actions/posts.js"
 
-const Post = ({ post, setCurrentId }) => {
+const Post = ({post, setCurrentId}) => {
     const formatDate = () => {
         try {
-            return post.endDate
+            return post.endDate || post.endDate !== null
                 ? month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear() + " - " + month[post.endDate.getUTCMonth()] + " " + post.endDate.getFullYear()
                 : month[post.startDate.getUTCMonth()] + " " + post.startDate.getFullYear();
         } catch (e) {
@@ -27,26 +27,30 @@ const Post = ({ post, setCurrentId }) => {
             date={formatDate()}
             iconStyle={{background: 'rgb(33, 150, 243)', color: '#fff'}}
             icon={<FaHeart/>}>
-           <Layout1 post={post} setCurrentId={setCurrentId} />
+            <Layout1 post={post} setCurrentId={setCurrentId}/>
         </VerticalTimelineElement>
     );
 }
 
 export default Post;
 
-const Layout1 = ({ post, setCurrentId }) => {
+const Layout1 = ({post, setCurrentId}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const adaptFontColorToImageExistence = () => {return post.image ? "white" : "black";}
+    const adaptFontColorToImageExistence = () => {
+        return post.image ? "white" : "black";
+    }
 
     return (
         <>
             <Card className={classes.card}>
-                {post.image ? <CardMedia className={classes.media} image={post.image} title={post.headline} /> : <span/>}
+                {post.image ? <CardMedia className={classes.media} image={post.image} title={post.headline}/> : <span/>}
                 <div className={classes.overlay}>
-                    <Typography variant="h6"><Box color={adaptFontColorToImageExistence()}>{post.headline}</Box></Typography>
+                    <Typography variant="h6"><Box
+                        color={adaptFontColorToImageExistence()}>{post.headline}</Box></Typography>
                 </div>
+                <br/>
                 <div className={classes.overlay2}>
                     <Button style={{color: adaptFontColorToImageExistence()}} size="small"
                             onClick={() => setCurrentId(post._id)}>
@@ -56,15 +60,16 @@ const Layout1 = ({ post, setCurrentId }) => {
                 <div className={classes.details}>
                     {/*<Typography variant="body2" color="textSecondary">{post.tag.map((tag) => `#${tag}`)}</Typography>*/}
                 </div>
-                <Typography className={classes.title} variant="h6" gutterBottom>{ post.tagline }</Typography>
+                <Typography className={classes.title} variant="h6" gutterBottom>{post.tagline}</Typography>
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">{ post.description }</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">{post.description}</Typography>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
-                    <Typography className={classes.textVertical} variant="body2" >{moment(post.createdAt).fromNow()}</Typography>
+                    <Typography className={classes.textVertical}
+                                variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                     <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
                         <DeleteIcon fontSize="small"/>
-                        Delete  {/* Space &nbsp; */}
+                        Delete {/* Space &nbsp; */}
                     </Button>
                 </CardActions>
             </Card>
@@ -72,7 +77,7 @@ const Layout1 = ({ post, setCurrentId }) => {
     )
 }
 
-const Layout2 = ({ post }) => {
+const Layout2 = ({post}) => {
     return (
         <>
             <h3 className="vertical-timeline-element-title">{post.headline}</h3>
@@ -85,7 +90,7 @@ const Layout2 = ({ post }) => {
 }
 
 
-let month = new Array();
+let month = [];
 month[0] = "Jan";
 month[1] = "Feb";
 month[2] = "Mar";

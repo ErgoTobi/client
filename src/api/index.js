@@ -1,24 +1,25 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000/posts';
+// const url = 'http://localhost:5000/posts';
+const url = 'https://mern-starter-memoires.herokuapp.com/posts';
 
-export const fetchPosts = () => axios.get(url, { transformResponse: [function (data) {
-    let resp;
-    try {
-        resp = JSON.parse(data);
-    } catch (e) {
-        throw Error(`[requestClient] Error parsing response JSON data - ${JSON.stringify(e)}`)
+export const fetchPosts = () => axios.get(url, {
+    transformResponse: [function (data) {
+        let resp;
+        try {
+            resp = JSON.parse(data);
+        } catch (e) {
+            throw Error(`[requestClient] Error parsing response JSON data - ${JSON.stringify(e)}`)
+        }
+        return resp;
+    }]
+}).then((response) => {
+        return response;
     }
-    return resp;
-    }]}).then((response) => { return response; }
-
 );
 export const createPost = (newPost) => axios.post(url, newPost);
 export const updatePost = (id, updatedPost) => axios.patch(`${url}/${id}`, updatedPost);
 export const deletePost = (id) => axios.delete(`${url}/${id}`);
-
-
-
 
 
 /*
