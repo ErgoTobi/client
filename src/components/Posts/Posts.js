@@ -3,7 +3,7 @@ import {VerticalTimeline, VerticalTimelineElement} from "react-vertical-timeline
 import {FaHeart} from "react-icons/fa";
 import Post from "./Post/Post.js"
 import {useSelector} from "react-redux";
-import useStyles from "./styles.js"
+import useStyles from "./styles.js";
 import {LinearProgress} from "@material-ui/core";
 import moment from "moment";
 
