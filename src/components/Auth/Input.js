@@ -13,6 +13,7 @@ const Input = ({ name, handleChange, label, half, autoFocus, type, handleShowPas
                 fullWidth
                 label={label}
                 autoFocus={autoFocus}
+                type={type}
                 InputProps={name === 'password' ? {
                     endAdornment: (
                         <InputAdornment position="end">
@@ -28,3 +29,4 @@ const Input = ({ name, handleChange, label, half, autoFocus, type, handleShowPas
 }
 
 export default Input;
+
