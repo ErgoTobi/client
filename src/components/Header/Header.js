@@ -6,6 +6,7 @@ import useStyles from './styles.js'
 import {useDispatch} from "react-redux";
 import logo from '../../images/logo.jpg';
 import {Link, useHistory, useLocation} from 'react-router-dom';
+import decode from "jwt-decode";
 
 const Header = () => {
     const classes = useStyles();
@@ -25,7 +26,12 @@ const Header = () => {
     useEffect(() => {
         const token = user?.token;
 
-        // JWT ... check
+        // JWT ... check expiration
+        if(token) {
+            const decodedToken = decode(token);
+
+            if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+        }
 
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);

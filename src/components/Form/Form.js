@@ -17,6 +17,7 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
     const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(() => {
         if (post) setPostData(post);
@@ -28,9 +29,9 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
         e.preventDefault(); // Prevent browser from refreshing
 
         if (currentId) {
-            dispatch(updatePost(currentId, postData));
+            dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
         } else {
-            dispatch(createPost(postData));
+            dispatch(createPost({ ...postData, name: user?.result?.name }));
         }
         clear();
     }
@@ -39,6 +40,16 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
         setCurrentId(null);
         setPostData(defaultData);
         setImageUploadData({selectedFiles: []});
+    }
+
+    if(!user?.result?.name) {
+        return (
+            <Paper className={classes.paper}>
+                <Typography variant="h6" align="center">
+                    Please Sign In to create your own Memoires!
+                </Typography>
+            </Paper>
+        )
     }
 
     const resizeFileToBase64 = (file) => new Promise(resolve => {

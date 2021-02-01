@@ -40,6 +40,7 @@ export default Post;
 const Layout1 = ({post, setCurrentId}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const adaptFontColorToImageExistence = () => {
         return post.image ? "white" : "black";
@@ -54,12 +55,14 @@ const Layout1 = ({post, setCurrentId}) => {
                         color={adaptFontColorToImageExistence()}>{post.headline}</Box></Typography>
                 </div>
                 <br/>
-                <div className={classes.overlay2}>
-                    <Button style={{color: adaptFontColorToImageExistence()}} size="small"
-                            onClick={() => setCurrentId(post._id)}>
-                        <MoreHorizIcon fontSize="default"/>
-                    </Button>
-                </div>
+                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                    <div className={classes.overlay2}>
+                        <Button style={{color: adaptFontColorToImageExistence()}} size="small"
+                                onClick={() => setCurrentId(post._id)}>
+                            <MoreHorizIcon fontSize="default"/>
+                        </Button>
+                    </div>
+                )}
                 <div className={classes.details}>
                     {/*<Typography variant="body2" color="textSecondary">{post.tag.map((tag) => `#${tag}`)}</Typography>*/}
                 </div>
@@ -69,11 +72,13 @@ const Layout1 = ({post, setCurrentId}) => {
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Typography className={classes.textVertical}
-                                variant="body2">{moment(post.createdAt).fromNow()}</Typography>
-                    <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
-                        <DeleteIcon fontSize="small"/>
-                        Delete {/* Space &nbsp; */}
-                    </Button>
+                                variant="body2">created by {post.name} {moment(post.createdAt).fromNow()}</Typography>
+                    {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                        <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
+                            <DeleteIcon fontSize="small"/>
+                            Delete {/* Space &nbsp; */}
+                        </Button>
+                    )}
                 </CardActions>
             </Card>
         </>
@@ -83,25 +88,31 @@ const Layout1 = ({post, setCurrentId}) => {
 const Layout2 = ({post, setCurrentId}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     return (
         <>
             <h3 className="vertical-timeline-element-title">{post.headline}</h3>
-            <div className={classes.overlay2}>
-                <Button style={{color: "black"}} size="small"
-                        onClick={() => setCurrentId(post._id)}>
-                    <MoreHorizIcon fontSize="default"/>
-                </Button>
-            </div>
+            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                <div className={classes.overlay2}>
+                    <Button style={{color: "black"}} size="small"
+                            onClick={() => setCurrentId(post._id)}>
+                        <MoreHorizIcon fontSize="default"/>
+                    </Button>
+                </div>
+            )}
             <h4 className="vertical-timeline-element-subtitle">{post.tagline}</h4>
             <br/>
             {post.image ? <img src={`${post.image}`} alt="memories" width="100%"/> : <span/>}
             <Typography variant="body2" color="textSecondary" component="p">{post.description}</Typography>
             <br/>
             <div className={classes.layout2delete}>
-                <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
-                    <DeleteIcon fontSize="small"/>
-                    Delete {/* Space &nbsp; */}
-                </Button>
+                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                    <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
+                        <DeleteIcon fontSize="small"/>
+                        Delete {/* Space &nbsp; */}
+                    </Button>
+                )}
             </div>
         </>
     )

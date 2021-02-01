@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const API = axios.create({baseURL: 'http://localhost:5000'});
 
+// const url = 'http://localhost:5000/posts';
+// const url = 'https://mern-starter-memoires.herokuapp.com/posts';
+
+// Necessary for middleware to work; happens before request and adds token
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
@@ -9,9 +13,6 @@ API.interceptors.request.use((req) => {
 
     return req;
 });
-
-// const url = 'http://localhost:5000/posts';
-// const url = 'https://mern-starter-memoires.herokuapp.com/posts';
 
 export const fetchPosts = () => API.get('/posts', {
     transformResponse: [function (data) {
