@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {AppBar, Avatar, Toolbar, Typography, Button} from "@material-ui/core";
+import {AppBar, Avatar, Toolbar, Typography, Button, InputBase} from "@material-ui/core";
 import styled from 'styled-components'
 import useStyles from './styles.js'
 import {useDispatch} from "react-redux";
 import logo from '../../images/logo.jpg';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import decode from "jwt-decode";
+import SearchIcon from '@material-ui/icons/Search';
+import {Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {header} from "../../constants/languageStrings.js";
 
 const Header = () => {
     const classes = useStyles();
@@ -17,7 +20,7 @@ const Header = () => {
     console.log(user);
 
     const logout = () => {
-        dispatch({ type: 'LOGOUT' });
+        dispatch({type: 'LOGOUT'});
 
         history.push('/');
         setUser(null);
@@ -27,10 +30,10 @@ const Header = () => {
         const token = user?.token;
 
         // JWT ... check expiration
-        if(token) {
+        if (token) {
             const decodedToken = decode(token);
 
-            if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+            if (decodedToken.exp * 1000 < new Date().getTime()) logout();
         }
 
         setUser(JSON.parse(localStorage.getItem('profile')));
@@ -40,11 +43,39 @@ const Header = () => {
         <HeaderContainer className="main-header">
             <AppBar className={classes.appBar} position="static" color="inherit">
                 <div className={classes.brandContainer}>
-                    <img className={classes.image} src={logo} alt="icon" height="60"/>
-                    <Typography component={Link} to="/" className={classes.heading} variant="h2"
-                                align="center">Memoires</Typography>
+                    <Button component={Link} to="/">
+                        <img className={classes.image} src={logo} alt="icon" height="60"/>
+                    </Button>
+                    <Navbar bg="--mainWhite" maxwidth="lg" expand="lg">
+                        <Navbar.Toggle/>
+                        <Navbar.Collapse>
+                            <Nav className="mr-auto">
+                                {/*<Nav.Link href="#about">About us</Nav.Link>*/}
+                                <NavDropdown title={header['navbar'].de}>
+                                    <NavDropdown.Item href="#action/1">action 1</NavDropdown.Item>
+                                    <NavDropdown.Item href="#action/2">action 2</NavDropdown.Item>
+                                    <NavDropdown.Item href="#action/3">action 3</NavDropdown.Item>
+                                    <NavDropdown.Divider/>
+                                    <NavDropdown.Item href="#about">About us</NavDropdown.Item>
+                                </NavDropdown>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
                 </div>
                 <Toolbar className={classes.toolbar}>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase variant="outlined"
+                                   placeholder={`${header['search'].de}...`}
+                                   classes={{
+                                       root: classes.inputRoot,
+                                       input: classes.inputInput,
+                                   }}
+                                   inputProps={{'aria-label': 'search'}}
+                        />
+                    </div>
                     {user?.result ? (
                         <div className={classes.profile}>
                             <Avatar className={classes.purple} alt={user?.result.name}
@@ -54,7 +85,7 @@ const Header = () => {
                                     onClick={logout}>Logout</Button>
                         </div>
                     ) : (
-                        <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+                        <Button component={Link} to="/auth" variant="contained" color="primary">{header['signin'].de}</Button>
                     )}
                 </Toolbar>
             </AppBar>

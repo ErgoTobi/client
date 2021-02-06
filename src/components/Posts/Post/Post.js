@@ -9,6 +9,7 @@ import {deletePost} from "../../../actions/posts.js"
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
+
 const Post = ({post, setCurrentId, toggleLayout}) => {
     const formatDate = () => {
         try {

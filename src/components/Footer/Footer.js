@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components'
+import LanguageToggle from "../Header/LanguageToggle";
+import LanguageSelector from "../Header/LanguageSelector";
+import LanguageGiver from "../Header/LanguageGiver";
 
 const Footer = () => {
     return (
@@ -36,11 +39,11 @@ const Footer = () => {
                         </div>
                         {/* Column 4*/}
                         <div className="col-md-3 col-sm-6">
-                            <h4>Lorem ipsum</h4>
+                            <h4>Language</h4>
                             <ul className="list-unstyled">
-                                <li>blarum</li>
-                                <li>blarum</li>
-                                <li>blarum</li>
+                                <li>
+                                    <LanguageGiver />
+                                </li>
                             </ul>
                         </div>
                         {/* Footer Bottom */}

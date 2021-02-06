@@ -8,7 +8,7 @@ import {Box, Button, Paper, TextField, Typography, Grid} from "@material-ui/core
 import DateFnsUtils from '@date-io/date-fns';
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import Resizer from 'react-image-file-resizer';
-import ToggleButtons from "../Posts/Post/ToggleButtons";
+import LayoutToggle from "../Posts/Post/LayoutToggle";
 
 const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
     const defaultData = {headline: '', tagline: '', description: '', endDate: null, startDate: new Date(), image: ''}
@@ -111,7 +111,7 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
             </form>
             <br/>
-            <ToggleButtons toggleLayout={toggleLayout} setToggleLayout={setToggleLayout}/>
+            <LayoutToggle toggleLayout={toggleLayout} setToggleLayout={setToggleLayout}/>
         </Paper>
     );
 }

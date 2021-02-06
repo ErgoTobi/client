@@ -1,0 +1,13 @@
+{
+  "card": {
+    "title": "Título",
+    "genre": "Género",
+    "date": "Estreno",
+    "description": "Descripción",
+    "link": "Lee mas"
+  },
+  "app": {
+    "h1": "Cambiar de idioma"
+  }
+}
+

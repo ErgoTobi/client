@@ -4,7 +4,7 @@ import ViewWeek from "@material-ui/icons/ViewWeek";
 import Dashboard from "@material-ui/icons/Dashboard";
 import React from "react";
 
-const ToggleButtons = ({ toggleLayout, setToggleLayout }) => {
+const LayoutToggle = ({ toggleLayout, setToggleLayout }) => {
 
     const handleToggleLayout = (event, newAlignment) => {
         setToggleLayout(newAlignment);
@@ -29,4 +29,4 @@ const ToggleButtons = ({ toggleLayout, setToggleLayout }) => {
     );
 }
 
-export default ToggleButtons;
+export default LayoutToggle;
