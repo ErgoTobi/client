@@ -1,13 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react';
-import {langData} from "./langData.js";
+import {languageData} from "./languageData.js";
 
-const LangContext = React.createContext({
+const LanguageContext = React.createContext({
     lang: '',
     currentLangData: {},
     switchLang: () => {},
 });
 
-export default LangContext;
+export default LanguageContext;
 
 export function LangProvider (props) {
 
@@ -28,13 +28,13 @@ export function LangProvider (props) {
     };
 
     return (
-        <LangContext.Provider value={{
+        <LanguageContext.Provider value={{
             lang,
             switchLang,
-            currentLangData: langData[lang]
+            currentLangData: languageData[lang]
         }}>
             {props.children}
-        </LangContext.Provider>
+        </LanguageContext.Provider>
     );
 };
 

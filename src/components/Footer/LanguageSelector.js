@@ -1,18 +1,17 @@
 import React, {useContext} from 'react';
-import LangContext from "../../context/LangContext";
+import LanguageContext from "../../context/LanguageContext";
 import styled from "styled-components";
-import {getDefaultLanguage, setLanguage} from "react-switch-lang";
+import {availableLanguages} from '../../context/languageData';
 
-const LanguageGiver = () => {
-    const { switchLang, lang } = useContext(LangContext);
+const LanguageSelector = () => {
+    const { switchLang, lang } = useContext(LanguageContext);
 
     const changeLanguageHandler = (lang) => {
-        console.log(lang);
         switchLang(lang);
     }
 
     return (
-        <SwitcherContainer>
+        <SwitcherContainer >
             <LanguageSwitcherSelector
                 lang={lang}
                 handleChangeLanguage={changeLanguageHandler}
@@ -21,12 +20,7 @@ const LanguageGiver = () => {
     )
 }
 
-export default LanguageGiver;
-
-const languages = [
-    { code: 'en', name: 'English'},
-    { code: 'deu', name: 'Deutsch'}
-]
+export default LanguageSelector;
 
 class LanguageSwitcherSelector extends React.Component {
     onChange = e => {
@@ -34,12 +28,10 @@ class LanguageSwitcherSelector extends React.Component {
     }
 
     render() {
-        const options = languages.map(language => {
-            if (language.code !== this.props.lang) {
-                return <li onClick={this.onChange}>
+        const options = availableLanguages.map((language, index) => {
+            return language.code !== this.props.lang ? (<li key={index} onClick={this.onChange}>
                     <div value={language.code} className={language.code}></div>
-                </li>
-            }
+                </li>) : (<li key={index} />)
         });
 
         return (
@@ -48,7 +40,7 @@ class LanguageSwitcherSelector extends React.Component {
                     className={this.props.lang}
                 >
                 </div>
-                <ul class="dropdown">
+                <ul className="dropdown">
                     {options}
                 </ul>
             </div>
@@ -60,14 +52,14 @@ const SwitcherContainer = styled.footer`
   body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .lang {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
+    align-items: flex-start;
+    margin-bottom: 0px;
 
     .dropdown {
       position: relative;
@@ -83,7 +75,7 @@ const SwitcherContainer = styled.footer`
     .dropdown {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
 
       li {
         margin: 0;
@@ -118,3 +110,4 @@ const SwitcherContainer = styled.footer`
 `;
 
 /*https://codepen.io/mewmix/pen/bGdNbbZ*/
+/*https://github.com/aleckan53/react-context-part2/blob/master/src/components/LangSwitch.js*/

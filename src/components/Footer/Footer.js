@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components'
-import LanguageToggle from "../Header/LanguageToggle";
-import LanguageSelector from "../Header/LanguageSelector";
-import LanguageGiver from "../Header/LanguageGiver";
+import LanguageSelector from "./LanguageSelector";
+import LanguageContext from "../../context/LanguageContext";
 
 const Footer = () => {
+    const { currentLangData: t } = useContext(LanguageContext);
     return (
         <FooterContainer className="main-footer">
             <div className="footer-middle">
@@ -12,7 +12,7 @@ const Footer = () => {
                     <div className="row">
                         {/* Column 1*/}
                         <div className="col-md-3 col-sm-6">
-                            <h4>Contact us</h4>
+                            <h4>{t.footer.contact}</h4>
                             <ul className="list-unstyled">
                                 <li>BRD GmbH</li>
                                 <li>Heavenhausen</li>
@@ -39,12 +39,8 @@ const Footer = () => {
                         </div>
                         {/* Column 4*/}
                         <div className="col-md-3 col-sm-6">
-                            <h4>Language</h4>
-                            <ul className="list-unstyled">
-                                <li>
-                                    <LanguageGiver />
-                                </li>
-                            </ul>
+                            <h4>{t.footer.lang}</h4>
+                            <LanguageSelector className="langSelector"/>
                         </div>
                         {/* Footer Bottom */}
                         <div className="footer-bottom">
@@ -81,4 +77,5 @@ const FooterContainer = styled.footer`
     ul li a:hover {
         color: var(--mainLightGrey);
     }
+
 `;

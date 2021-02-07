@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {VerticalTimelineElement} from "react-vertical-timeline-component";
 import {FaHeart} from "react-icons/fa";
 import moment from "moment";
@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {deletePost} from "../../../actions/posts.js"
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import LanguageContext from "../../../context/LanguageContext";
 
 
 const Post = ({post, setCurrentId, toggleLayout}) => {
@@ -42,6 +43,7 @@ const Layout1 = ({post, setCurrentId}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const { currentLangData: t } = useContext(LanguageContext);
 
     const adaptFontColorToImageExistence = () => {
         return post.image ? "white" : "black";
@@ -73,7 +75,7 @@ const Layout1 = ({post, setCurrentId}) => {
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Typography className={classes.textVertical}
-                                variant="body2">created by {post.name} {moment(post.createdAt).fromNow()}</Typography>
+                                variant="body2">{t.posts.created} {post.name} {moment(post.createdAt).fromNow()}</Typography>
                     {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
                         <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
                             <DeleteIcon fontSize="small"/>

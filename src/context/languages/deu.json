@@ -1,12 +1,38 @@
 {
-  "card": {
-    "title": "Название",
-    "genre": "Жанр",
-    "date": "Дата премьеры",
-    "description": "Описание",
-    "link": "Читать подробно"
+  "header": {
+    "signin": "ANMELDEN",
+    "search": "Suchen",
+    "navbar": "Was man wissen sollte!",
+    "about": "Über uns"
   },
-  "app": {
-    "h1": "Изменить язык"
+  "footer": {
+    "contact": "Kontakt",
+    "lang": "Sprache wählen"
+  },
+  "posts": {
+    "created": "erstellt von "
+  },
+  "auth": {
+    "signin": "Anmelden",
+    "signup": "Registrieren",
+    "email": "E-mail Addresse",
+    "password": "Passwort",
+    "account": "Hast du schon einen Account? Anmelden",
+    "accountno":  "Hast du noch keinen Account? Registrieren"
+  },
+  "form": {
+    "signtocreate": "Melde dich an, um deine Memoires zu erstellen!",
+    "headline": "Überschrift",
+    "tagline": "Slogan",
+    "description": "Beschreibung",
+    "startdate": "Startdatum",
+    "enddate": "Enddatum",
+    "submit": "Erstellen",
+    "clear": "Leeren",
+    "chooseimage": "Neues Bild auswählen",
+    "create": "Erstelle",
+    "edit": "Bearbeite",
+    "memoires": "deine Memoires"
   }
 }
+

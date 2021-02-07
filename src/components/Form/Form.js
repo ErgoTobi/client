@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import 'react-vertical-timeline-component/style.min.css';
 import ImageUploader from 'react-images-upload';
 import useStyles from "../Posts/styles";
@@ -9,6 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import Resizer from 'react-image-file-resizer';
 import LayoutToggle from "../Posts/Post/LayoutToggle";
+import LanguageContext from "../../context/LanguageContext";
 
 const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
     const defaultData = {headline: '', tagline: '', description: '', endDate: null, startDate: new Date(), image: ''}
@@ -18,6 +19,7 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const { currentLangData: t } = useContext(LanguageContext);
 
     useEffect(() => {
         if (post) setPostData(post);
@@ -46,7 +48,7 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
         return (
             <Paper className={classes.paper}>
                 <Typography variant="h6" align="center">
-                    Please Sign In to create your own Memoires!
+                    {t.form.signtocreate}
                 </Typography>
             </Paper>
         )
@@ -67,25 +69,24 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h5"><Box fontStyle="oblique">{currentId ? 'Edit' : 'Create'} your
-                    Memoires</Box></Typography>
-                <TextField name="headline" variant="outlined" label="Headline" fullWidth value={postData.headline}
+                <Typography variant="h5"><Box fontStyle="oblique">{currentId ? `${t.form.edit}` : `${t.form.create}`} {t.form.memoires}</Box></Typography>
+                <TextField name="headline" variant="outlined" label={t.form.headline} fullWidth value={postData.headline}
                            onChange={(e) => setPostData({...postData, headline: e.target.value})} required/>
-                <TextField name="tagline" variant="outlined" label="Tagline" fullWidth value={postData.tagline}
+                <TextField name="tagline" variant="outlined" label={t.form.tagline} fullWidth value={postData.tagline}
                            onChange={(e) => setPostData({...postData, tagline: e.target.value})}/>
-                <TextField name="description" variant="outlined" label="Description" fullWidth
+                <TextField name="description" variant="outlined" label={t.form.description} fullWidth
                            value={postData.description}
                            onChange={(e) => setPostData({...postData, description: e.target.value})}/>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
-                        <KeyboardDatePicker name="startDate" margin="normal" label="Start Date" format="dd/MM/yyyy"
+                        <KeyboardDatePicker name="startDate" margin="normal" label={t.form.startdate} format="dd/MM/yyyy"
                                             value={postData.startDate}
                                             onChange={(e) => {
                                                 setPostData({...postData, startDate: e})
                                             }}
                                             KeyboardButtonProps={{'aria-label': 'change date',}}
                                             InputLabelProps={{shrink: true,}} required/>
-                        <KeyboardDatePicker name="endDate" margin="normal" label="End Date" format="dd/MM/yyyy"
+                        <KeyboardDatePicker name="endDate" margin="normal" label={t.form.enddate} format="dd/MM/yyyy"
                                             value={postData.endDate}
                                             onChange={(e) => {
                                                 setPostData({...postData, endDate: e})
@@ -99,7 +100,7 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
                 <TextField name="tag" variant="outlined" label="Tags" fullWidth value={postData.tag}
                            onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}/>
                  */}
-                <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText="Choose new Image"
+                <ImageUploader name="image" id="imageUploader" withIcon={true} buttonText={t.form.chooseimage}
                                imgExtension={imgExtension} maxFileSize={10485760}
                                label={`Max file size: 10mb; Accepted: ${imgExtension}`} singleImage={true}
                                withPreview={imageUploadData.selectedFiles.length ? true : false}
@@ -107,8 +108,8 @@ const Form = ({currentId, setCurrentId, toggleLayout, setToggleLayout}) => {
                                    setPostData({...postData, image: result})
                                }))}/>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit"
-                        fullWidth>Submit</Button>
-                <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+                        fullWidth>{t.form.submit}</Button>
+                <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>{t.form.clear}</Button>
             </form>
             <br/>
             <LayoutToggle toggleLayout={toggleLayout} setToggleLayout={setToggleLayout}/>

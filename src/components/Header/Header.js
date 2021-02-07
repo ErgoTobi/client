@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {AppBar, Avatar, Toolbar, Typography, Button, InputBase} from "@material-ui/core";
 import styled from 'styled-components'
@@ -9,7 +9,7 @@ import {Link, useHistory, useLocation} from 'react-router-dom';
 import decode from "jwt-decode";
 import SearchIcon from '@material-ui/icons/Search';
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
-import {header} from "../../constants/languageStrings.js";
+import LanguageContext from "../../context/LanguageContext";
 
 const Header = () => {
     const classes = useStyles();
@@ -17,6 +17,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
+    const { currentLangData: t } = useContext(LanguageContext);
     console.log(user);
 
     const logout = () => {
@@ -51,12 +52,12 @@ const Header = () => {
                         <Navbar.Collapse>
                             <Nav className="mr-auto">
                                 {/*<Nav.Link href="#about">About us</Nav.Link>*/}
-                                <NavDropdown title={header['navbar'].de}>
+                                <NavDropdown title={t.header.navbar}>
                                     <NavDropdown.Item href="#action/1">action 1</NavDropdown.Item>
                                     <NavDropdown.Item href="#action/2">action 2</NavDropdown.Item>
                                     <NavDropdown.Item href="#action/3">action 3</NavDropdown.Item>
                                     <NavDropdown.Divider/>
-                                    <NavDropdown.Item href="#about">About us</NavDropdown.Item>
+                                    <NavDropdown.Item href="#about">{t.header.about}</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Navbar.Collapse>
@@ -68,7 +69,7 @@ const Header = () => {
                             <SearchIcon/>
                         </div>
                         <InputBase variant="outlined"
-                                   placeholder={`${header['search'].de}...`}
+                                   placeholder={`${t.header.search}...`}
                                    classes={{
                                        root: classes.inputRoot,
                                        input: classes.inputInput,
@@ -85,7 +86,7 @@ const Header = () => {
                                     onClick={logout}>Logout</Button>
                         </div>
                     ) : (
-                        <Button component={Link} to="/auth" variant="contained" color="primary">{header['signin'].de}</Button>
+                        <Button component={Link} to="/auth" variant="contained" color="primary">{t.header.signin}</Button>
                     )}
                 </Toolbar>
             </AppBar>

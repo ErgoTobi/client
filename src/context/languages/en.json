@@ -1,13 +1,37 @@
 {
-  "card": {
-    "title": "Título",
-    "genre": "Género",
-    "date": "Estreno",
-    "description": "Descripción",
-    "link": "Lee mas"
+  "header": {
+    "signin": "SIGN IN",
+    "search": "Search",
+    "navbar": "Things to know!",
+    "about": "About Us"
   },
-  "app": {
-    "h1": "Cambiar de idioma"
+  "footer": {
+    "contact": "Contact us",
+    "lang": "Choose language"
+  },
+  "posts": {
+    "created": "created by "
+  },
+  "auth": {
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "email": "Email Address",
+    "password": "Password",
+    "account": "Already have an account? Sign in",
+    "accountno":  "Don't have an account? Sign Up"
+  },
+  "form": {
+    "signtocreate": "Sign In to create your own Memoires!",
+    "headline": "Headline",
+    "tagline": "Tagline",
+    "description": "Description",
+    "startdate": "Start date",
+    "enddate": "End date",
+    "submit": "Submit",
+    "clear": "Clear",
+    "chooseimage": "Choose new image",
+    "create": "Create",
+    "edit": "Bearbeite",
+    "memoires": "your Memoires"
   }
 }
-
