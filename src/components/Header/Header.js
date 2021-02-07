@@ -9,7 +9,7 @@ import {Link, useHistory, useLocation} from 'react-router-dom';
 import decode from "jwt-decode";
 import SearchIcon from '@material-ui/icons/Search';
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
-import LanguageContext from "../../context/LanguageContext";
+import LanguageContext from "../../context/LanguageContext.js";
 
 const Header = () => {
     const classes = useStyles();
@@ -18,7 +18,6 @@ const Header = () => {
     const history = useHistory();
     const location = useLocation();
     const { currentLangData: t } = useContext(LanguageContext);
-    console.log(user);
 
     const logout = () => {
         dispatch({type: 'LOGOUT'});

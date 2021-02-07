@@ -21,7 +21,7 @@
     "accountno":  "Hast du noch keinen Account? Registrieren"
   },
   "form": {
-    "signtocreate": "Melde dich an, um deine Memoires zu erstellen!",
+    "signtocreate": "Melde dich an, um deinen Lebensweg zu erstellen!",
     "headline": "Überschrift",
     "tagline": "Slogan",
     "description": "Beschreibung",
@@ -32,7 +32,7 @@
     "chooseimage": "Neues Bild auswählen",
     "create": "Erstelle",
     "edit": "Bearbeite",
-    "memoires": "deine Memoires"
+    "memoires": "deinen Lebensweg"
   }
 }
 

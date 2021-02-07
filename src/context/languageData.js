@@ -1,12 +1,14 @@
-import deu from './languages/deu.json'
+import de from './languages/de.json'
 import en from './languages/en.json'
 
 export const availableLanguages = [
-    { code: 'en', name: 'English'},
-    { code: 'deu', name: 'Deutsch'}
+    { code: 'en-US', name: 'English'},
+    { code: 'de', name: 'Deutsch'}
 ]
 
 export const languageData = {
-    'en': en,
-    'deu': deu,
+    'en-US': en,
+    'de': de,
 }
+
+// Life-Lane = Life-Lean

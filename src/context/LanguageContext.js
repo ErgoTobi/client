@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import {languageData} from "./languageData.js";
+import {languageData, availableLanguages} from "./languageData.js";
 
 const LanguageContext = React.createContext({
     lang: '',
@@ -19,6 +19,9 @@ export function LangProvider (props) {
 
         if (selectedLang) {
             setLang(selectedLang);
+        } else {
+            setLang(availableLanguages[0].code)
+            window.localStorage.setItem('appUILang', availableLanguages[0].code);
         }
     }, [lang])
 

@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components'
-import LanguageSelector from "./LanguageSelector";
-import LanguageContext from "../../context/LanguageContext";
+import LanguageSelector from "./LanguageSelector.js";
+import LanguageContext from "../../context/LanguageContext.js";
 
 const Footer = () => {
     const { currentLangData: t } = useContext(LanguageContext);
@@ -40,7 +40,7 @@ const Footer = () => {
                         {/* Column 4*/}
                         <div className="col-md-3 col-sm-6">
                             <h4>{t.footer.lang}</h4>
-                            <LanguageSelector className="langSelector"/>
+                            <LanguageSelector />
                         </div>
                         {/* Footer Bottom */}
                         <div className="footer-bottom">

@@ -21,7 +21,7 @@
     "accountno":  "Don't have an account? Sign Up"
   },
   "form": {
-    "signtocreate": "Sign In to create your own Memoires!",
+    "signtocreate": "Sign In to create your own Life-Lane!",
     "headline": "Headline",
     "tagline": "Tagline",
     "description": "Description",
@@ -32,6 +32,7 @@
     "chooseimage": "Choose new image",
     "create": "Create",
     "edit": "Bearbeite",
-    "memoires": "your Memoires"
+    "memoires": "your Life-Lane"
   }
 }
+
