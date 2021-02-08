@@ -11,13 +11,14 @@ import SearchIcon from '@material-ui/icons/Search';
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import LanguageContext from "../../context/LanguageContext.js";
 
-const Header = () => {
+const Header = ({width}) => {
+    const breakpoint = 620;
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const { currentLangData: t } = useContext(LanguageContext);
+    const {currentLangData: t} = useContext(LanguageContext);
 
     const logout = () => {
         dispatch({type: 'LOGOUT'});
@@ -39,43 +40,20 @@ const Header = () => {
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
+    const isMobile = () => width < breakpoint;
+
+    console.log(isMobile())
+
     return (
         <HeaderContainer className="main-header">
-            <AppBar className={classes.appBar} position="static" color="inherit">
+            <AppBar className={!isMobile() ? classes.appBarBig : classes.appBarSmall} position="static" color="inherit">
                 <div className={classes.brandContainer}>
                     <Button component={Link} to="/">
                         <img className={classes.image} src={logo} alt="icon" height="60"/>
                     </Button>
-                    <Navbar bg="--mainWhite" maxwidth="lg" expand="lg">
-                        <Navbar.Toggle/>
-                        <Navbar.Collapse>
-                            <Nav className="mr-auto">
-                                {/*<Nav.Link href="#about">About us</Nav.Link>*/}
-                                <NavDropdown title={t.header.navbar}>
-                                    <NavDropdown.Item href="#action/1">action 1</NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/2">action 2</NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3">action 3</NavDropdown.Item>
-                                    <NavDropdown.Divider/>
-                                    <NavDropdown.Item href="#about">{t.header.about}</NavDropdown.Item>
-                                </NavDropdown>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Navbar>
                 </div>
                 <Toolbar className={classes.toolbar}>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon/>
-                        </div>
-                        <InputBase variant="outlined"
-                                   placeholder={`${t.header.search}...`}
-                                   classes={{
-                                       root: classes.inputRoot,
-                                       input: classes.inputInput,
-                                   }}
-                                   inputProps={{'aria-label': 'search'}}
-                        />
-                    </div>
+                    {!isMobile() ? <SearchBar/> : <span/>}
                     {user?.result ? (
                         <div className={classes.profile}>
                             <Avatar className={classes.purple} alt={user?.result.name}
@@ -85,15 +63,43 @@ const Header = () => {
                                     onClick={logout}>Logout</Button>
                         </div>
                     ) : (
-                        <Button component={Link} to="/auth" variant="contained" color="primary">{t.header.signin}</Button>
+                        <Button component={Link} to="/auth" variant="contained"
+                                color="primary">{t.header.signin}</Button>
                     )}
                 </Toolbar>
             </AppBar>
+            {isMobile()
+                ? <AppBar className={classes.searchBar} position="static" color="inherit">
+                    <SearchBar/>
+                </AppBar>
+                : <span/>}
         </HeaderContainer>
     );
 }
 
 export default Header;
+
+const SearchBar = () => {
+    const classes = useStyles();
+    const {currentLangData: t} = useContext(LanguageContext);
+    return (
+        <>
+            <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                    <SearchIcon/>
+                </div>
+                <InputBase variant="outlined"
+                           placeholder={`${t.header.search}...`}
+                           classes={{
+                               root: classes.inputRoot,
+                               input: classes.inputInput,
+                           }}
+                           inputProps={{'aria-label': 'search'}}
+                />
+            </div>
+        </>
+    )
+}
 
 /* <div className="header-middle">*/
 const HeaderContainer = styled.header`
@@ -136,4 +142,24 @@ const HeaderContainer = styled.header`
                         </Navbar.Collapse>
                     </Navbar>
                 </div>
+
+
+*/
+
+/*
+                    <Navbar bg="--mainWhite" maxwidth="lg" expand="lg">
+                        <Navbar.Toggle/>
+                        <Navbar.Collapse>
+                            <Nav className="mr-auto">
+                                {<Nav.Link href="#about">About us</Nav.Link>}
+<NavDropdown title={t.header.navbar}>
+    <NavDropdown.Item href="#action/1">action 1</NavDropdown.Item>
+    <NavDropdown.Item href="#action/2">action 2</NavDropdown.Item>
+    <NavDropdown.Item href="#action/3">action 3</NavDropdown.Item>
+    <NavDropdown.Divider/>
+    <NavDropdown.Item href="#about">{t.header.about}</NavDropdown.Item>
+</NavDropdown>
+</Nav>
+</Navbar.Collapse>
+</Navbar>
 */

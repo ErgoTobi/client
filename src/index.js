@@ -6,18 +6,16 @@ import thunk from 'redux-thunk';
 import "./index.css"
 import reducers from './reducers';
 import App from './App';
-import Footer from './components/Footer/Footer';
 import {LangProvider} from "./context/LanguageContext";
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
-    <LangProvider>
-        <Provider store={store}>
+    <Provider store={store}>
+        <LangProvider>
             <App/>
-            <br/>
-            <Footer/>
-        </Provider>
-    </LangProvider>,
+        </LangProvider>
+    </Provider>
+    ,
     document.getElementById('root')
 );

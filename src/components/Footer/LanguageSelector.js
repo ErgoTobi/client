@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import LanguageContext from "../../context/LanguageContext";
 import styled from "styled-components";
-import {availableLanguages} from '../../context/languageData';
+import {languages} from '../../context/languageData';
 
 const LanguageSelector = () => {
     const { switchLang, lang } = useContext(LanguageContext);
@@ -30,10 +30,10 @@ class LanguageSwitcherSelector extends React.Component {
 
 
     render() {
-        const options = availableLanguages.map((language, index) => {
-            return language.code !== this.props.lang ?
+        const options = languages.map((language, index) => {
+            return language !== this.props.lang ?
                 (<li key={index} onClick={this.onChange}>
-                    <div value={language.code} className={language.code}></div>
+                    <div value={language} className={language}></div>
                 </li>) :
                 (<li key={index} />)
         });

@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import {languageData, availableLanguages} from "./languageData.js";
+import {languageData, languages} from "./languageData.js";
 
 const LanguageContext = React.createContext({
     lang: '',
@@ -11,24 +11,30 @@ export default LanguageContext;
 
 export function LangProvider (props) {
 
-    const [lang, setLang] = useState(window.localStorage.getItem('appUILang') || window.navigator.language);
+    const assignLang = () => {
+        if(languages.includes(window.localStorage.getItem('appUILang')))
+            return window.localStorage.getItem('appUILang');
+        else if (languages.includes(window.navigator.language))
+            return window.navigator.language;
+        else
+            return languages[0];
+    }
 
+    const [lang, setLang] = useState(assignLang());
 
     useLayoutEffect(() => {
         const selectedLang = window.localStorage.getItem('appUILang');
-
-        if (selectedLang) {
-            setLang(selectedLang);
-        } else {
-            setLang(availableLanguages[0].code)
-            window.localStorage.setItem('appUILang', availableLanguages[0].code);
-        }
+        setLang(languages.includes(selectedLang)
+            ? selectedLang
+            : languages[0]);
     }, [lang])
 
     const switchLang = (ln) => {
         setLang(ln);
         window.localStorage.setItem('appUILang', ln);
     };
+
+
 
     return (
         <LanguageContext.Provider value={{
