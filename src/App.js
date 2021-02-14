@@ -21,10 +21,13 @@ const App = () => {
            We only want the listener to be added once */
     }, []);
 
+    const isMobile = () => width < breakpoint;
+
+
     return (
         <BrowserRouter>
             <div className="container" >
-                <Header width={width}/>
+                <Header isMobile={isMobile}/>
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/auth" exact component={Auth} />

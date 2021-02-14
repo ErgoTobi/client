@@ -8,11 +8,10 @@ import logo from '../../images/logo.jpg';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import decode from "jwt-decode";
 import SearchIcon from '@material-ui/icons/Search';
-import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import LanguageContext from "../../context/LanguageContext.js";
 
-const Header = ({width}) => {
-    const breakpoint = 620;
+const Header = ({isMobile}) => {
+
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const dispatch = useDispatch();
@@ -40,7 +39,6 @@ const Header = ({width}) => {
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
-    const isMobile = () => width < breakpoint;
 
     console.log(isMobile())
 
